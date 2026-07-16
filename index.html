@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Institute for Strategic Diplomacy</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#070a13;
+    --bg-1:#090e1a;
+    --card:#111827;
+    --card-2:#0d1420;
+    --gold:#c5a880;
+    --gold-soft:rgba(197,168,128,0.10);
+    --gold-soft-2:rgba(197,168,128,0.22);
+    --slate:#94a3b8;
+    --slate-dim:#5b6b82;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(197,168,128,0.07), transparent 60%),
+      radial-gradient(ellipse 900px 500px at 100% 10%, rgba(197,168,128,0.05), transparent 55%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1) 40%, var(--bg-0));
+    color:#e7e9ee;
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+  .font-serif-elite{font-family:'Playfair Display',serif;}
+  .font-cinzel{font-family:'Cinzel',serif;}
+  .tracking-diplomat{letter-spacing:0.22em;}
+  ::selection{background:var(--gold-soft-2);color:#fff;}
+
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg-0);}
+  ::-webkit-scrollbar-thumb{background:#1e2634;border-radius:8px;border:2px solid var(--bg-0);}
+  ::-webkit-scrollbar-thumb:hover{background:#2a3444;}
+
+  .glass{
+    background:linear-gradient(180deg, rgba(17,24,39,0.75), rgba(13,20,32,0.75));
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .card-elite{
+    background:linear-gradient(160deg, var(--card), var(--card-2));
+    border:1px solid rgba(255,255,255,0.06);
+    transition:all .35s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+    overflow:hidden;
+  }
+  .card-elite::before{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(500px circle at var(--mx,50%) var(--my,0%), rgba(197,168,128,0.08), transparent 45%);
+    opacity:0;
+    transition:opacity .4s ease;
+    pointer-events:none;
+  }
+  .card-elite:hover::before{opacity:1;}
+  .card-elite:hover{
+    border-color:rgba(197,168,128,0.35);
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(197,168,128,0.06);
+    transform:translateY(-3px);
+  }
+  .gold-text{color:var(--gold);}
+  .divider-gold{border-color:rgba(197,168,128,0.14);}
+
+  .btn-gold{
+    background:linear-gradient(160deg, #d8bd93, var(--gold) 55%, #a98a63);
+    color:#12140f; font-weight:600; transition:all .3s ease;
+    box-shadow:0 10px 30px -12px rgba(197,168,128,0.5);
+  }
+  .btn-gold:hover{filter:brightness(1.08); transform:translateY(-1px); box-shadow:0 14px 34px -10px rgba(197,168,128,0.65);}
+  .btn-gold:disabled{opacity:.55; cursor:not-allowed; transform:none; filter:none;}
+
+  .btn-accent{
+    background: linear-gradient(160deg, color-mix(in srgb, var(--accent-color, #c5a880) 65%, white 35%), var(--accent-color, #c5a880) 55%, color-mix(in srgb, var(--accent-color, #c5a880) 70%, black 30%));
+    color:#0d0f14; font-weight:600; transition:all .3s ease;
+    box-shadow:0 10px 30px -12px color-mix(in srgb, var(--accent-color, #c5a880) 55%, transparent);
+  }
+  .btn-accent:hover{filter:brightness(1.1); transform:translateY(-1px);}
+  .btn-accent:disabled{opacity:.55; cursor:not-allowed; transform:none; filter:none;}
+
+  .btn-ghost{ border:1px solid rgba(197,168,128,0.28); color:var(--gold); transition:all .3s ease; }
+  .btn-ghost:hover{background:var(--gold-soft); border-color:rgba(197,168,128,0.6);}
+  .btn-reject{ border:1px solid rgba(224,122,107,0.35); color:#e07a6b; transition:all .3s ease; }
+  .btn-reject:hover{background:rgba(224,122,107,0.1); border-color:rgba(224,122,107,0.6);}
+  .btn-outline-slate{ border:1px solid rgba(255,255,255,0.1); color:var(--slate); transition:all .25s ease; }
+  .btn-outline-slate:hover{border-color:rgba(255,255,255,0.3); color:#e7e9ee;}
+
+  .pill{ border:1px solid rgba(255,255,255,0.09); color:var(--slate); transition:all .25s ease; white-space:nowrap; }
+  .pill.active, .pill:hover{ border-color:var(--gold); color:var(--gold); background:var(--gold-soft); }
+
+  .seal{ position:relative; display:flex; align-items:center; justify-content:center; }
+  .seal svg{display:block;}
+  .seal .ring-text{ animation:spin-slow 22s linear infinite; transform-origin:50% 50%; }
+  @keyframes spin-slow{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .seal .ring-text{animation:none;} }
+
+  .fade-in{animation:fadeIn .6s ease both;}
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+  .modal-backdrop{ background:rgba(4,6,11,0.78); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  .modal-panel{ animation:panelIn .4s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes panelIn{ from{opacity:0; transform:translateY(24px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);} }
+
+  .drop-zone{ border:1.5px dashed rgba(197,168,128,0.35); transition:all .3s ease; }
+  .drop-zone.drag-active{ border-color:var(--gold); background:var(--gold-soft); box-shadow:inset 0 0 40px rgba(197,168,128,0.12); }
+  .drop-zone.file-ready{ border-style:solid; border-color:rgba(90,200,140,0.55); background:rgba(90,200,140,0.06); }
+
+  .checkmark-pop{ animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both; }
+  @keyframes popIn{ from{ transform:scale(0); opacity:0;} to{ transform:scale(1); opacity:1;} }
+
+  .status-pending{ color:#e0b466; border-color:rgba(224,180,102,0.35); background:rgba(224,180,102,0.08); }
+  .status-published{ color:#6fcf97; border-color:rgba(111,207,151,0.35); background:rgba(111,207,151,0.08); }
+  .status-rejected{ color:#e07a6b; border-color:rgba(224,122,107,0.35); background:rgba(224,122,107,0.08); }
+
+  .nav-link{ position:relative; color:var(--slate); transition:color .25s ease; }
+  .nav-link:hover{ color:#f1eee7; }
+  .nav-link::after{ content:''; position:absolute; left:0; bottom:-6px; width:0; height:1px; background:var(--gold); transition:width .3s ease; }
+  .nav-link:hover::after{ width:100%; }
+
+  input[type=text], input[type=email], input[type=password], textarea, select{
+    background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:#e7e9ee;
+    transition:all .25s ease; width:100%;
+  }
+  input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, textarea:focus, select:focus{
+    outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(197,168,128,0.12);
+  }
+  input.field-invalid, textarea.field-invalid, select.field-invalid{ border-color:#e0574a !important; box-shadow:0 0 0 3px rgba(224,87,74,0.12) !important; }
+  input::placeholder, textarea::placeholder{color:var(--slate-dim);}
+  a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
+  .hero-grid-lines{
+    background-image:
+      linear-gradient(rgba(197,168,128,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(197,168,128,0.05) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 20%, black, transparent 75%);
+  }
+
+  .toast{ animation:toastIn .35s ease both; }
+  @keyframes toastIn{ from{opacity:0; transform:translateY(-10px) translateX(-50%);} to{opacity:1; transform:translateY(0) translateX(-50%);} }
+
+  .desk-number{ font-family:'Cinzel',serif; color:rgba(197,168,128,0.35); }
+
+  .tab-btn{ color:var(--slate); font-size:12px; letter-spacing:.08em; padding:10px 4px; border-bottom:2px solid transparent; transition:all .25s ease; white-space:nowrap; }
+  .tab-btn.active{ color:var(--gold); border-bottom-color:var(--gold); }
+  .tab-btn:hover{ color:#e7e9ee; }
+  .tab-badge{ background:rgba(197,168,128,0.15); color:var(--gold); font-size:10px; padding:1px 7px; border-radius:999px; margin-left:6px; }
+
+  .field-error{ color:#e0574a; font-size:11px; margin-top:5px; }
+
+  .activity-item{ border-left:2px solid rgba(197,168,128,0.3); padding-left:14px; position:relative; }
+  .activity-item::before{ content:''; position:absolute; left:-4.5px; top:5px; width:7px; height:7px; border-radius:999px; background:var(--gold); }
+
+  .mobile-menu{ animation:menuDrop .3s ease both; }
+  @keyframes menuDrop{ from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
+
+  .loader-ring{ border:2px solid rgba(13,15,20,0.25); border-top-color:#0d0f14; border-radius:999px; animation:spin .8s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+
+  /* ===== Leadership profile frame ===== */
+  .profile-frame{
+    position:relative; border-radius:9999px; overflow:hidden; flex-shrink:0;
+    background:linear-gradient(160deg,#1a2333,#0d1420);
+    border:1.5px solid rgba(197,168,128,0.28);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .profile-frame img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .profile-frame .frame-fallback{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; }
+
+  /* ===== Identity banner ===== */
+  #identityBanner{ border-left-width:4px; transition:all .4s ease; }
+
+  /* ===== Article editor canvas ===== */
+  .article-canvas{
+    background:rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.08); color:#e7e9ee;
+    transition:all .25s ease; line-height:1.75;
+  }
+  .article-canvas:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(197,168,128,0.12); }
+</style>
+</head>
+<body class="antialiased">
+
+<div id="toastContainer" class="fixed top-6 left-1/2 z-[200] flex flex-col gap-2 items-center pointer-events-none"></div>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="fixed top-0 left-0 right-0 z-40 glass">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-3 group" onclick="closeMobileMenu()">
+      <span class="seal w-10 h-10">
+        <svg viewBox="0 0 100 100" width="40" height="40">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="#c5a880" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#c5a880" stroke-width="0.7" opacity="0.4"/>
+          <g class="ring-text">
+            <path id="navSealPath" d="M 50,50 m -30,0 a 30,30 0 1,1 60,0 a 30,30 0 1,1 -60,0" fill="none"/>
+            <text font-size="6.3" fill="#c5a880" letter-spacing="2.5" opacity="0.85">
+              <textPath href="#navSealPath" startOffset="0%">INSTITUTE FOR STRATEGIC DIPLOMACY · EST. MMXX ·</textPath>
+            </text>
+          </g>
+          <text x="50" y="55" text-anchor="middle" font-family="Cinzel, serif" font-size="20" fill="#c5a880">ISD</text>
+        </svg>
+      </span>
+      <div class="hidden sm:block leading-tight">
+        <p class="font-cinzel text-sm tracking-diplomat text-[#f1eee7]">ISD</p>
+        <p class="text-[10px] text-[#5b6b82] tracking-wide">Institute for Strategic Diplomacy</p>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-9 font-inter text-sm">
+      <a href="#desks" class="nav-link">Desks</a>
+      <a href="#leadership" class="nav-link">Leadership</a>
+      <a href="#library" class="nav-link">Public Library</a>
+      <a href="#about" class="nav-link">Mandate</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="openApplyModal()" class="hidden sm:inline-flex btn-ghost text-xs tracking-wide px-4 py-2 rounded-sm">Apply to Join</button>
+      <button onclick="openPortalModal()" class="btn-gold text-xs tracking-wide px-4 py-2 rounded-sm">Member Portal</button>
+      <button onclick="toggleMobileMenu()" aria-label="Toggle menu" class="lg:hidden text-[#c5a880] p-1.5">
+        <svg id="menuIconOpen" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg>
+        <svg id="menuIconClose" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="hidden"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden mobile-menu glass border-t divider-gold px-6 py-5 flex flex-col gap-4 text-sm">
+    <a href="#desks" onclick="closeMobileMenu()" class="nav-link">Desks</a>
+    <a href="#leadership" onclick="closeMobileMenu()" class="nav-link">Leadership</a>
+    <a href="#library" onclick="closeMobileMenu()" class="nav-link">Public Library</a>
+    <a href="#about" onclick="closeMobileMenu()" class="nav-link">Mandate</a>
+    <button onclick="closeMobileMenu(); openApplyModal();" class="btn-ghost text-xs tracking-wide px-4 py-2.5 rounded-sm text-left sm:hidden">Apply to Join</button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header id="top" class="relative pt-40 pb-28 px-6 overflow-hidden">
+  <div class="absolute inset-0 hero-grid-lines"></div>
+  <div class="max-w-5xl mx-auto text-center relative">
+    <div class="flex justify-center mb-8 fade-in">
+      <span class="seal w-24 h-24">
+        <svg viewBox="0 0 100 100" width="96" height="96">
+          <circle cx="50" cy="50" r="47" fill="none" stroke="#c5a880" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#c5a880" stroke-width="0.5" opacity="0.35"/>
+          <g class="ring-text">
+            <path id="heroSealPath" d="M 50,50 m -32,0 a 32,32 0 1,1 64,0 a 32,32 0 1,1 -64,0" fill="none"/>
+            <text font-size="4.6" fill="#c5a880" letter-spacing="3" opacity="0.8">
+              <textPath href="#heroSealPath" startOffset="0%">ADVANCING SOVEREIGN &amp; MULTILATERAL STATECRAFT · SINCE MMXX ·</textPath>
+            </text>
+          </g>
+          <text x="50" y="47" text-anchor="middle" font-family="Cinzel, serif" font-size="15" fill="#c5a880">ISD</text>
+          <line x1="38" y1="56" x2="62" y2="56" stroke="#c5a880" stroke-width="0.6" opacity="0.6"/>
+        </svg>
+      </span>
+    </div>
+    <p class="fade-in font-cinzel text-[#c5a880] tracking-diplomat text-xs mb-6" style="animation-delay:.1s">INSTITUTE FOR STRATEGIC DIPLOMACY</p>
+    <h1 class="fade-in font-serif-elite text-4xl sm:text-6xl leading-[1.12] text-[#f5f2ea] mb-8" style="animation-delay:.18s">
+      Advancing Sovereign &amp;<br class="hidden sm:block"> Multilateral Statecraft.
+    </h1>
+    <p class="fade-in max-w-2xl mx-auto text-[#94a3b8] text-base sm:text-lg leading-relaxed mb-10" style="animation-delay:.26s">
+      An independent institute convening career diplomats, security scholars, and economists to
+      publish rigorous, policy-actionable research across six specialized desks of statecraft.
+    </p>
+    <div class="fade-in flex flex-wrap justify-center gap-4" style="animation-delay:.34s">
+      <a href="#library" class="btn-gold px-7 py-3 rounded-sm text-sm tracking-wide">Explore the Library</a>
+      <button onclick="openApplyModal()" class="btn-ghost px-7 py-3 rounded-sm text-sm tracking-wide">Apply to Join</button>
+    </div>
+    <div class="fade-in mt-16 grid grid-cols-3 max-w-lg mx-auto divide-x divide-white/5" style="animation-delay:.42s">
+      <div class="px-4">
+        <p class="font-serif-elite text-2xl text-[#f5f2ea]">6</p>
+        <p class="text-[10px] tracking-widest text-[#5b6b82] mt-1">ACADEMIC DESKS</p>
+      </div>
+      <div class="px-4">
+        <p id="statBriefs" class="font-serif-elite text-2xl text-[#f5f2ea]">0</p>
+        <p class="text-[10px] tracking-widest text-[#5b6b82] mt-1">PUBLISHED BRIEFS</p>
+      </div>
+      <div class="px-4">
+        <p class="font-serif-elite text-2xl text-[#f5f2ea]">1</p>
+        <p class="text-[10px] tracking-widest text-[#5b6b82] mt-1">DIRECTOR-GENERAL</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MANDATE / ABOUT ============ -->
+<section id="about" class="px-6 py-20 border-t divider-gold">
+  <div class="max-w-5xl mx-auto grid md:grid-cols-5 gap-10 items-start">
+    <div class="md:col-span-2">
+      <p class="font-cinzel text-xs tracking-diplomat gold-text mb-3">THE MANDATE</p>
+      <h2 class="font-serif-elite text-3xl text-[#f5f2ea] leading-tight">A house of record for the discipline of statecraft.</h2>
+    </div>
+    <div class="md:col-span-3 text-[#94a3b8] leading-relaxed space-y-4 text-[15px]">
+      <p>The Institute for Strategic Diplomacy exists to produce policy research that survives contact with a negotiating table. We hold no partisan mandate and serve no single capital &mdash; our briefs are built to be useful to any delegation seeking rigor over rhetoric.</p>
+      <p>Every publication passes through desk review and receives the Director-General's Executive Seal before entering the public record. Nothing reaches the library unvetted.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIX DESKS ============ -->
+<section id="desks" class="px-6 py-20 border-t divider-gold">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <p class="font-cinzel text-xs tracking-diplomat gold-text mb-3">INSTITUTIONAL ARCHITECTURE</p>
+      <h2 class="font-serif-elite text-3xl sm:text-4xl text-[#f5f2ea]">Six Desks of Statecraft</h2>
+      <p class="text-[#94a3b8] mt-4 text-sm leading-relaxed">Every scholar, brief, and deliberation at ISD is organized beneath one of six standing desks, each carrying its own institutional color partition.</p>
+    </div>
+    <div id="desksGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </div>
+</section>
+
+<!-- ============ LEADERSHIP ============ -->
+<section id="leadership" class="px-6 py-20 border-t divider-gold">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <p class="font-cinzel text-xs tracking-diplomat gold-text mb-3">GOVERNANCE</p>
+      <h2 class="font-serif-elite text-3xl sm:text-4xl text-[#f5f2ea]">Leadership Roster</h2>
+      
+    </div>
+
+    <div class="mb-14">
+      <p class="text-[10px] tracking-diplomat text-[#5b6b82] text-center mb-6">TIER I &middot; SUPREME LEADERSHIP</p>
+      <div class="max-w-md mx-auto">
+        <div class="card-elite rounded-md p-8 text-center" onmousemove="cardGlow(event)">
+          <div class="profile-frame w-24 h-24 mx-auto mb-5">
+            <img src="images/leadership/trevor-museti.jpg" alt="Trevor Museti" onerror="this.style.display='none'">
+            <div class="frame-fallback">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c5a880" stroke-width="1.3" opacity="0.55"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-6.6 7-6.6s7 2.9 7 6.6" stroke-linecap="round"/></svg>
+              <span class="font-cinzel text-[10px] gold-text">TM</span>
+            </div>
+          </div>
+          <h3 class="font-serif-elite text-xl text-[#f5f2ea]">Trevor Museti</h3>
+          <p class="gold-text text-xs tracking-widest mt-1">FOUNDER &amp; DIRECTOR-GENERAL</p>
+          <p class="text-[#94a3b8] text-sm mt-4 leading-relaxed">Sets institutional strategy, chairs the Executive Seal review, and leads ISD's foreign policy formulation and multilateral engagement.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-14">
+      <p class="text-[10px] tracking-diplomat text-[#5b6b82] text-center mb-6">TIER II &middot; ADMINISTRATIVE CORE</p>
+      <div class="grid sm:grid-cols-2 max-w-2xl mx-auto gap-6">
+        <div class="card-elite rounded-md p-6 text-center" onmousemove="cardGlow(event)">
+          <div class="profile-frame w-16 h-16 mx-auto mb-4">
+            <img src="images/leadership/michael-sunguti.jpg" alt="Michael Sunguti" onerror="this.style.display='none'">
+            <div class="frame-fallback">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c5a880" stroke-width="1.4" opacity="0.55"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-6.6 7-6.6s7 2.9 7 6.6" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+          <h3 class="font-serif-elite text-lg text-[#f5f2ea]">Michael Sunguti</h3>
+          <p class="text-[#94a3b8] text-xs tracking-widest mt-1">CHIEF OF STAFF</p>
+        </div>
+        <div class="card-elite rounded-md p-6 text-center" onmousemove="cardGlow(event)">
+          <div class="profile-frame w-16 h-16 mx-auto mb-4">
+            <img src="images/leadership/rhyne-eiton.jpg" alt="Rhyne Eiton" onerror="this.style.display='none'">
+            <div class="frame-fallback">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c5a880" stroke-width="1.4" opacity="0.55"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-6.6 7-6.6s7 2.9 7 6.6" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+          <h3 class="font-serif-elite text-lg text-[#f5f2ea]">Rhyne Eiton</h3>
+          <p class="text-[#94a3b8] text-xs tracking-widest mt-1">SECRETARIAT</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="text-[10px] tracking-diplomat text-[#5b6b82] text-center mb-6">TIER III &middot; ACADEMIC DESK LEADS</p>
+      <div id="deskLeadsGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    
+  </div>
+</section>
+
+<!-- ============ PUBLIC LIBRARY ============ -->
+<section id="library" class="px-6 py-20 border-t divider-gold">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <p class="font-cinzel text-xs tracking-diplomat gold-text mb-3">THE ARCHIVE</p>
+      <h2 class="font-serif-elite text-3xl sm:text-4xl text-[#f5f2ea]">Executive Research Library</h2>
+      <p class="text-[#94a3b8] mt-4 text-sm leading-relaxed">Briefs enter this record only after receiving the Director-General's Executive Seal &mdash; as typeset articles, downloadable packages, or both.</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 max-w-3xl mx-auto mb-8">
+      <div class="relative flex-1">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5b6b82" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+        <input type="text" id="librarySearchInput" oninput="setLibrarySearch(this.value)" placeholder="Search briefs by title or author&hellip;" class="rounded-sm pl-10 pr-3.5 py-2.5 text-sm">
+      </div>
+      <select id="librarySortSelect" onchange="setLibrarySort(this.value)" class="rounded-sm px-3.5 py-2.5 text-sm sm:w-52">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="az">Title A&ndash;Z</option>
+        <option value="za">Title Z&ndash;A</option>
+      </select>
+    </div>
+
+    <div id="libraryFilters" class="flex flex-wrap justify-center gap-2.5 mb-12"></div>
+
+    <div id="libraryGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <p id="libraryEmpty" class="hidden text-center text-[#5b6b82] text-sm py-16">No published briefs match your search. Try a different term or category.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="px-6 py-14 border-t divider-gold">
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-3">
+      <span class="seal w-9 h-9">
+        <svg viewBox="0 0 100 100" width="36" height="36">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="#c5a880" stroke-width="1.2" opacity="0.45"/>
+          <text x="50" y="55" text-anchor="middle" font-family="Cinzel, serif" font-size="18" fill="#c5a880">ISD</text>
+        </svg>
+      </span>
+      <p class="text-xs text-[#5b6b82]">&copy; 2026 Institute for Strategic Diplomacy. All rights reserved.</p>
+    </div>
+    <div class="flex gap-6 text-xs text-[#5b6b82]">
+      <a href="#desks" class="hover:text-[#c5a880] transition-colors">Desks</a>
+      <a href="#leadership" class="hover:text-[#c5a880] transition-colors">Leadership</a>
+      <a href="#library" class="hover:text-[#c5a880] transition-colors">Library</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ APPLY MODAL ============ -->
+<div id="applyModal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4">
+  <div class="absolute inset-0 modal-backdrop" onclick="closeApplyModal()"></div>
+  <div class="modal-panel relative glass rounded-md max-w-lg w-full p-8 max-h-[88vh] overflow-y-auto">
+    <button onclick="closeApplyModal()" class="absolute top-5 right-5 text-[#5b6b82] hover:text-[#c5a880] transition-colors text-xl leading-none">&times;</button>
+    <p class="font-cinzel text-xs tracking-diplomat gold-text mb-2">SCHOLAR APPLICATION</p>
+    <h3 class="font-serif-elite text-2xl text-[#f5f2ea] mb-6">Apply to Join ISD</h3>
+    <form id="applyForm" onsubmit="submitApplication(event)" class="space-y-4" novalidate>
+      <div>
+        <label class="block text-xs text-[#94a3b8] mb-1.5">Full Name</label>
+        <input type="text" id="applyName" class="w-full rounded-sm px-3.5 py-2.5 text-sm" placeholder="e.g. Amina Okafor">
+        <p id="applyNameError" class="field-error hidden">Please enter your full name.</p>
+      </div>
+      <div>
+        <label class="block text-xs text-[#94a3b8] mb-1.5">Email Address</label>
+        <input type="text" id="applyEmail" class="w-full rounded-sm px-3.5 py-2.5 text-sm" placeholder="you@institution.org">
+        <p id="applyEmailError" class="field-error hidden">Please enter a valid email address.</p>
+      </div>
+      <div>
+        <label class="block text-xs text-[#94a3b8] mb-1.5">Desk of Interest</label>
+        <select id="applyDeskSelect" class="w-full rounded-sm px-3.5 py-2.5 text-sm"></select>
+        <p id="applyDeskError" class="field-error hidden">Please select a desk.</p>
+      </div>
+      <div>
+        <label class="block text-xs text-[#94a3b8] mb-1.5">Statement of Interest</label>
+        <textarea id="applyStatement" rows="4" class="w-full rounded-sm px-3.5 py-2.5 text-sm resize-none" placeholder="Briefly describe your research background and interest in this desk (min. 20 characters)&hellip;"></textarea>
+        <p id="applyStatementError" class="field-error hidden">Please write at least 20 characters.</p>
+      </div>
+      <button type="submit" id="applySubmitBtn" class="btn-gold w-full py-3 rounded-sm text-sm tracking-wide mt-2">Submit Application</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ PORTAL MODAL (STATE-DRIVEN WORKSPACE) ============ -->
+<div id="portalModal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4 py-8">
+  <div class="absolute inset-0 modal-backdrop" onclick="closePortalModal()"></div>
+  <div class="modal-panel relative glass rounded-md max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+
+    <div class="sticky top-0 z-10 glass flex items-center justify-between px-7 py-5 border-b divider-gold">
+      <div class="flex items-center gap-3">
+        <span class="seal w-8 h-8">
+          <svg viewBox="0 0 100 100" width="32" height="32">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#c5a880" stroke-width="1.4" opacity="0.5"/>
+            <text x="50" y="55" text-anchor="middle" font-family="Cinzel, serif" font-size="18" fill="#c5a880">ISD</text>
+          </svg>
+        </span>
+        <div>
+          <p class="font-cinzel text-xs tracking-diplomat text-[#f1eee7]">MEMBER PORTAL</p>
+          <p id="portalSubtitle" class="text-[10px] text-[#5b6b82]">Credentialed access only</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span id="portalRoleBadge" class="hidden text-[10px] tracking-widest px-3 py-1.5 rounded-full border"></span>
+        <button id="portalLogoutBtn" onclick="portalLogout()" class="hidden text-xs text-[#94a3b8] hover:text-[#c5a880] transition-colors">Log Out</button>
+        <button onclick="closePortalModal()" class="text-[#5b6b82] hover:text-[#c5a880] transition-colors text-xl leading-none">&times;</button>
+      </div>
+    </div>
+
+    <div class="p-7">
+      <!-- AUTH / GATEKEEPING / SECURE HANDSHAKE PANEL -->
+      <div id="authPanel">
+        <p class="font-cinzel text-xs tracking-diplomat gold-text mb-2">CREDENTIAL VERIFICATION</p>
+        <h3 class="font-serif-elite text-2xl text-[#f5f2ea] mb-6">Present Your Access Key</h3>
+        <form id="loginForm" onsubmit="attemptLogin(event)" class="max-w-sm space-y-4" novalidate>
+          <div>
+            <label class="block text-xs text-[#94a3b8] mb-1.5">Institutional Email</label>
+            <input type="text" id="loginEmail" oninput="validateLoginEmailLive()" class="w-full rounded-sm px-3.5 py-2.5 text-sm" placeholder="scholar@isd.org">
+            <p id="loginEmailError" class="field-error hidden">Enter a valid email address (e.g. name@isd.org).</p>
+          </div>
+          <div>
+            <label class="block text-xs text-[#94a3b8] mb-1.5">Access Key</label>
+            <input type="password" id="loginKey" oninput="validateLoginKeyLive()" class="w-full rounded-sm px-3.5 py-2.5 text-sm" placeholder="&bull;&bull;&bull;&bull;">
+            <p id="loginKeyError" class="field-error hidden">Access key must be at least 4 characters.</p>
+          </div>
+          <p id="loginError" class="hidden text-xs" style="color:#e0574a">Invalid credentials. Verify your access key and try again.</p>
+          <button type="submit" id="loginSubmitBtn" class="btn-gold px-6 py-2.5 rounded-sm text-sm tracking-wide inline-flex items-center gap-2.5">
+            <span id="loginBtnLoader" class="loader-ring hidden w-3.5 h-3.5"></span>
+            <span id="loginBtnLabel">Verify &amp; Enter</span>
+          </button>
+        </form>
+        <div class="mt-8 pt-6 border-t divider-gold text-[11px] text-[#5b6b82] leading-relaxed max-w-sm">
+          <p class="mb-1"><span class="gold-text">Basic Scholar</span> access key: <code class="text-[#94a3b8]">1234</code></p>
+          <p><span class="gold-text">Director-General</span> command key: <code class="text-[#94a3b8]">dg123</code> (email: <code class="text-[#94a3b8]">director@isd.org</code>)</p>
+          <p class="mt-2">Roster emails: <code class="text-[#94a3b8]">elena.voss@isd.org</code>, <code class="text-[#94a3b8]">kwame.adeyemi@isd.org</code>, etc. &mdash; key <code class="text-[#94a3b8]">1234</code> auto-routes recognized staff to their desk.</p>
+        </div>
+      </div>
+
+      <!-- WORKSPACE (shown after login) -->
+      <div id="workspacePanel" class="hidden">
+
+        <!-- PREMIUM IDENTITY / GREETING LAYER -->
+        <div id="identityBanner" class="rounded-md px-6 py-5 mb-8 border divider-gold glass flex items-center justify-between flex-wrap gap-4"></div>
+
+        <div id="deskSelectStage">
+          <p class="font-cinzel text-xs tracking-diplomat gold-text mb-2">ACTIVE WORKSPACE</p>
+          <h3 class="font-serif-elite text-2xl text-[#f5f2ea] mb-6">Select Your Desk Context</h3>
+          <div id="workspaceDeskGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <div id="deskWorkStage" class="hidden">
+          <button onclick="clearActiveDesk()" class="text-xs text-[#94a3b8] hover:text-[#c5a880] transition-colors mb-5 inline-flex items-center gap-1.5">&larr; Change Desk</button>
+          <div class="flex items-start justify-between mb-6 flex-wrap gap-3">
+            <div>
+              <p id="workDeskLabel" class="font-cinzel text-xs tracking-diplomat mb-1"></p>
+              <h3 id="workDeskName" class="font-serif-elite text-2xl text-[#f5f2ea]"></h3>
+            </div>
+          </div>
+
+          <!-- CONJOINT COMPOSITION DESK: Article Editor + File Package -->
+          <div class="card-elite rounded-md p-6 mb-8">
+            <p class="text-sm text-[#f1eee7] font-medium mb-1">Compose &amp; Submit a Policy Brief</p>
+            <p class="text-xs text-[#5b6b82] mb-5">Type the brief directly, attach a PDF/DOCX package, or both. Submissions enter the Director-General's review queue.</p>
+
+            <input type="text" id="briefTitleInput" placeholder="Brief title" class="w-full rounded-sm px-3.5 py-2.5 text-sm mb-4">
+
+            <div class="grid md:grid-cols-2 gap-5">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <label class="text-xs text-[#94a3b8]">Article Editor</label>
+                  <span id="articleWordCount" class="text-[10px] text-[#5b6b82]">0 words</span>
+                </div>
+                <textarea id="articleBodyInput" oninput="updateWordCount()" rows="9" class="article-canvas font-serif-elite w-full rounded-sm px-4 py-3.5 text-[13.5px] resize-y" placeholder="Draft the body of your policy brief here. Once sealed, this text is published as a public article&hellip;"></textarea>
+              </div>
+              <div>
+                <label class="text-xs text-[#94a3b8] mb-2 block">File Package &mdash; PDF or DOCX (optional)</label>
+                <div id="dropZone" class="drop-zone rounded-md p-6 text-center cursor-pointer h-[calc(100%-26px)] min-h-[184px] flex flex-col items-center justify-center"
+                     ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"
+                     onclick="document.getElementById('fileInput').click()">
+                  <div id="dropZoneIdle">
+                    <svg class="mx-auto mb-3" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#c5a880" stroke-width="1.4">
+                      <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <p class="text-sm text-[#e7e9ee]">Drag &amp; drop a PDF or DOCX</p>
+                    <p class="text-xs text-[#5b6b82] mt-1">or click to browse</p>
+                  </div>
+                  <div id="dropZoneFile" class="hidden items-center justify-center gap-3">
+                    <span class="checkmark-pop w-9 h-9 rounded-full bg-[rgba(90,200,140,0.15)] flex items-center justify-center shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6fcf97" stroke-width="2.4"><path d="M4 12l5 5L20 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div class="text-left min-w-0">
+                      <p id="dropZoneFileName" class="text-sm text-[#e7e9ee] truncate"></p>
+                      <p class="text-xs text-[#5b6b82]">Ready to submit</p>
+                    </div>
+                  </div>
+                </div>
+                <input type="file" id="fileInput" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="hidden" onchange="handleFileSelect(event)">
+              </div>
+            </div>
+
+            <button onclick="submitBrief()" id="submitBriefBtn" class="btn-gold mt-5 px-6 py-2.5 rounded-sm text-sm tracking-wide">Submit to Review Queue</button>
+            <p id="submitBriefMsg" class="hidden field-error mt-3"></p>
+          </div>
+
+          <div>
+            <p class="text-sm text-[#f1eee7] font-medium mb-4">Submissions &mdash; This Desk</p>
+            <div id="myDeskBriefsList" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- DG EXECUTIVE CONTROL PANEL -->
+        <div id="dgPanel" class="hidden mt-12 pt-10 border-t divider-gold">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="seal w-7 h-7">
+              <svg viewBox="0 0 100 100" width="28" height="28">
+                <circle cx="50" cy="50" r="46" fill="none" stroke="#c5a880" stroke-width="1.6" opacity="0.6"/>
+                <text x="50" y="56" text-anchor="middle" font-family="Cinzel, serif" font-size="26" fill="#c5a880">DG</text>
+              </svg>
+            </span>
+            <p class="font-cinzel text-xs tracking-diplomat gold-text">DIRECTOR-GENERAL EXECUTIVE CONTROL</p>
+          </div>
+
+          <div class="flex items-center gap-6 border-b divider-gold mb-6 overflow-x-auto">
+            <button class="tab-btn" data-tab="pending" onclick="switchDgTab('pending')">PENDING BRIEFS<span id="tabBadgePending" class="tab-badge hidden">0</span></button>
+            <button class="tab-btn" data-tab="applications" onclick="switchDgTab('applications')">APPLICATIONS<span id="tabBadgeApps" class="tab-badge hidden">0</span></button>
+            <button class="tab-btn" data-tab="activity" onclick="switchDgTab('activity')">ACTIVITY LOG</button>
+          </div>
+
+          <div id="dgTabPending">
+            <div id="pendingQueueList" class="space-y-3 mb-4"></div>
+            <p id="pendingQueueEmpty" class="hidden text-sm text-[#5b6b82] py-8 text-center">The review queue is clear. No briefs awaiting the Executive Seal.</p>
+          </div>
+
+          <div id="dgTabApplications" class="hidden">
+            <div id="applicationsList" class="space-y-3 mb-4"></div>
+            <p id="applicationsEmpty" class="hidden text-sm text-[#5b6b82] py-8 text-center">No scholar applications on file.</p>
+          </div>
+
+          <div id="dgTabActivity" class="hidden">
+            <div id="activityLogList" class="space-y-4 mb-4"></div>
+            <p id="activityLogEmpty" class="hidden text-sm text-[#5b6b82] py-8 text-center">No institutional activity recorded yet.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BRIEF FILE DOWNLOAD MODAL ============ -->
+<div id="briefModal" class="fixed inset-0 z-[110] hidden items-center justify-center px-4">
+  <div class="absolute inset-0 modal-backdrop" onclick="closeBriefModal()"></div>
+  <div class="modal-panel relative glass rounded-md max-w-lg w-full p-8">
+    <button onclick="closeBriefModal()" class="absolute top-5 right-5 text-[#5b6b82] hover:text-[#c5a880] transition-colors text-xl leading-none">&times;</button>
+    <p id="briefModalDesk" class="font-cinzel text-xs tracking-diplomat gold-text mb-2"></p>
+    <h3 id="briefModalTitle" class="font-serif-elite text-2xl text-[#f5f2ea] mb-3"></h3>
+    <p id="briefModalMeta" class="text-xs text-[#5b6b82] mb-6"></p>
+    <a id="briefModalDownload" href="#" download class="btn-gold inline-block px-6 py-2.5 rounded-sm text-sm tracking-wide">Download &#10142;</a>
+  </div>
+</div>
+
+<!-- ============ FORUM-STYLE ARTICLE READER MODAL ============ -->
+<div id="articleReaderModal" class="fixed inset-0 z-[110] hidden items-center justify-center px-4 py-8">
+  <div class="absolute inset-0 modal-backdrop" onclick="closeArticleReader()"></div>
+  <div class="modal-panel relative glass rounded-md max-w-2xl w-full max-h-[88vh] overflow-y-auto p-9">
+    <button onclick="closeArticleReader()" class="absolute top-5 right-5 text-[#5b6b82] hover:text-[#c5a880] transition-colors text-xl leading-none">&times;</button>
+    <p id="articleReaderDesk" class="font-cinzel text-xs tracking-diplomat mb-3"></p>
+    <h2 id="articleReaderTitle" class="font-serif-elite text-3xl text-[#f5f2ea] leading-tight mb-3"></h2>
+    <p id="articleReaderMeta" class="text-xs text-[#5b6b82] mb-8 pb-6 border-b divider-gold"></p>
+    <div id="articleReaderBody" class="space-y-4 text-[15px] leading-relaxed text-[#dbe0e8] font-serif-elite"></div>
+    <div id="articleReaderFileLink" class="mt-8 pt-6 border-t divider-gold hidden"></div>
+  </div>
+</div>
+
+<!-- ============ DG SUBMISSION PREVIEW MODAL ============ -->
+<div id="pdfPreviewModal" class="fixed inset-0 z-[120] hidden items-center justify-center px-4 py-8">
+  <div class="absolute inset-0 modal-backdrop" onclick="closePdfPreviewModal()"></div>
+  <div class="modal-panel relative glass rounded-md max-w-3xl w-full max-h-[90vh] flex flex-col">
+    <div class="flex items-center justify-between px-7 py-5 border-b divider-gold shrink-0">
+      <div>
+        <p id="pdfPreviewDesk" class="font-cinzel text-[10px] tracking-diplomat gold-text mb-1"></p>
+        <h3 id="pdfPreviewTitle" class="font-serif-elite text-lg text-[#f5f2ea]"></h3>
+      </div>
+      <button onclick="closePdfPreviewModal()" class="text-[#5b6b82] hover:text-[#c5a880] transition-colors text-xl leading-none">&times;</button>
+    </div>
+    <div class="flex-1 min-h-[50vh] bg-[#05070d] p-5 overflow-y-auto">
+      <div id="pdfPreviewArticle" class="hidden space-y-3 text-sm leading-relaxed text-[#dbe0e8] font-serif-elite mb-5 pb-5 border-b divider-gold"></div>
+      <iframe id="pdfPreviewFrame" class="hidden w-full min-h-[45vh] rounded-sm" style="border:none;"></iframe>
+      <div id="pdfPreviewNone" class="hidden"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ REJECT REASON MODAL ============ -->
+<div id="rejectModal" class="fixed inset-0 z-[120] hidden items-center justify-center px-4">
+  <div class="absolute inset-0 modal-backdrop" onclick="closeRejectModal()"></div>
+  <div class="modal-panel relative glass rounded-md max-w-md w-full p-8">
+    <button onclick="closeRejectModal()" class="absolute top-5 right-5 text-[#5b6b82] hover:text-[#c5a880] transition-colors text-xl leading-none">&times;</button>
+    <p class="font-cinzel text-xs tracking-diplomat text-[#e07a6b] mb-2">RETURN FOR REVISION</p>
+    <h3 id="rejectModalTitle" class="font-serif-elite text-xl text-[#f5f2ea] mb-5"></h3>
+    <label class="block text-xs text-[#94a3b8] mb-1.5">Note to the submitting scholar</label>
+    <textarea id="rejectReasonInput" rows="4" class="w-full rounded-sm px-3.5 py-2.5 text-sm resize-none" placeholder="Explain what needs revision before this brief can be resubmitted&hellip;"></textarea>
+    <p id="rejectReasonError" class="field-error hidden">Please provide a note explaining the rejection.</p>
+    <div class="flex gap-3 mt-5">
+      <button onclick="closeRejectModal()" class="btn-outline-slate flex-1 py-2.5 rounded-sm text-sm">Cancel</button>
+      <button onclick="confirmReject()" class="btn-reject flex-1 py-2.5 rounded-sm text-sm">Confirm Return</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APPLICATION DETAIL MODAL ============ -->
+<div id="appDetailModal" class="fixed inset-0 z-[120] hidden items-center justify-center px-4">
+  <div class="absolute inset-0 modal-backdrop" onclick="closeAppDetailModal()"></div>
+  <div class="modal-panel relative glass rounded-md max-w-lg w-full p-8">
+    <button onclick="closeAppDetailModal()" class="absolute top-5 right-5 text-[#5b6b82] hover:text-[#c5a880] transition-colors text-xl leading-none">&times;</button>
+    <p id="appDetailDesk" class="font-cinzel text-xs tracking-diplomat gold-text mb-2"></p>
+    <h3 id="appDetailName" class="font-serif-elite text-2xl text-[#f5f2ea] mb-1"></h3>
+    <p id="appDetailEmail" class="text-xs text-[#5b6b82] mb-5"></p>
+    <p class="text-xs text-[#94a3b8] mb-1.5">Statement of Interest</p>
+    <p id="appDetailStatement" class="text-sm text-[#e7e9ee] leading-relaxed border divider-gold rounded-sm p-4 bg-white/[0.015] mb-6"></p>
+    <div id="appDetailActions" class="flex gap-3"></div>
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const DESKS = [
+  { id:'desk1', numeral:'I',   short:'Foreign Policy & Regional Integration', name:'Foreign Policy Analysis & Regional Integration', lead:'Dr. Kwame Adeyemi', leadEmail:'kwame.adeyemi@isd.org', initials:'KA', desc:'Bilateral and regional statecraft, alliance architecture, and integration frameworks.', accent:'#b23a48', accentSoft:'rgba(178,58,72,0.14)' },
+  { id:'desk2', numeral:'II',  short:'Global Security & Conflict Studies', name:'Global Security, Peace & Conflict Studies', lead:'Dr. Elena Voss', leadEmail:'elena.voss@isd.org', initials:'EV', desc:'Conflict prevention, peace operations, and hard security assessment.', accent:'#c9973f', accentSoft:'rgba(201,151,63,0.14)' },
+  { id:'desk3', numeral:'III', short:'IPE & Development', name:'International Political Economy (IPE) & Development', lead:'Dr. Rahul Mehta', leadEmail:'rahul.mehta@isd.org', initials:'RM', desc:'Trade regimes, sovereign development finance, and economic statecraft.', accent:'#2f9e6e', accentSoft:'rgba(47,158,110,0.14)' },
+  { id:'desk4', numeral:'IV',  short:'Multilateralism & International Law', name:'Multilateralism, International Organizations & Law', lead:'Amb. Sofia Lindqvist', leadEmail:'sofia.lindqvist@isd.org', initials:'SL', desc:'UN system reform, treaty law, and multilateral institution design.', accent:'#3b6ea5', accentSoft:'rgba(59,110,165,0.14)' },
+  { id:'desk5', numeral:'V',   short:'Cyber Diplomacy & Digital Sovereignty', name:'Cyber Diplomacy, Technology & Digital Sovereignty', lead:'Dr. Naledi Dube', leadEmail:'naledi.dube@isd.org', initials:'ND', desc:'Digital governance norms, cyber conflict, and technological sovereignty.', accent:'#8b6bc9', accentSoft:'rgba(139,107,201,0.14)' },
+  { id:'desk6', numeral:'VI',  short:'Diplomatic Practice & Strategic Comms', name:'Diplomatic Practice, Public Diplomacy & Strategic Communications', lead:'Amb. Henri Delacroix', leadEmail:'henri.delacroix@isd.org', initials:'HD', desc:'Negotiation craft, public diplomacy, and strategic narrative.', accent:'#7d8a9c', accentSoft:'rgba(125,138,156,0.14)' },
+];
+
+const DG_CREDENTIALS = { email:'director@isd.org', key:'dg123' };
+const SCHOLAR_KEY = '1234';
+const BRIEFS_KEY = 'isd_briefs_v3';
+const APPS_KEY = 'isd_applications_v1';
+const ACTIVITY_KEY = 'isd_activity_v1';
+const USERS_KEY = 'isd_users_v1';
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const SEED_BRIEFS = [
+  { id:'seed1', deskId:'desk2', title:'Ceasefire Durability in Multiparty Conflicts', author:'Dr. Elena Voss', status:'published', submittedAt:'2026-05-02', fileName:'ceasefire-durability.pdf', dataUri:null, fileKind:null, articleBody:'Ceasefires in multiparty conflicts fail at a markedly higher rate than bilateral truces, largely because signatory coordination costs rise non-linearly with each additional armed faction at the table.\n\nThis brief surveys twelve multiparty ceasefires since 2010 and finds that durability correlates most strongly with the presence of a credible third-party verification mechanism, rather than the strength of the political settlement itself.\n\nWe recommend that mediators front-load monitoring architecture before final signature, rather than treating verification as a post-agreement afterthought.', rejectionNote:null },
+  { id:'seed2', deskId:'desk5', title:'Digital Sovereignty and Cross-Border Data Flows', author:'Dr. Naledi Dube', status:'published', submittedAt:'2026-05-18', fileName:'digital-sovereignty.pdf', dataUri:null, fileKind:null, articleBody:'Data localization mandates are proliferating faster than the multilateral frameworks meant to govern them, creating a patchwork of sovereign data regimes that complicate both commerce and security cooperation.\n\nThis brief maps the current landscape across 40 jurisdictions and proposes a tiered interoperability standard that preserves core sovereignty protections while reducing compliance friction for cross-border digital trade.', rejectionNote:null },
+  { id:'seed3', deskId:'desk3', title:'Sovereign Debt Restructuring in the Global South', author:'Dr. Rahul Mehta', status:'published', submittedAt:'2026-06-01', fileName:'sovereign-debt.pdf', dataUri:null, fileKind:null, articleBody:'The current sovereign debt restructuring architecture was not built for a creditor landscape this fragmented. Bilateral, multilateral, and commercial creditors now routinely disagree on comparability of treatment, stalling restructurings for years.\n\nThis brief argues for a standing arbitration facility, modeled loosely on investor-state dispute mechanisms, to compress restructuring timelines without displacing the Paris Club or the G20 Common Framework.', rejectionNote:null },
+  { id:'seed4', deskId:'desk4', title:'Reforming the UN Security Council Veto', author:'Amb. Sofia Lindqvist', status:'published', submittedAt:'2026-06-20', fileName:'un-veto-reform.pdf', dataUri:null, fileKind:null, articleBody:'Veto reform proposals have circulated for decades without traction, largely because they target the veto itself rather than the conditions under which it is exercised.\n\nThis brief revives the "veto restraint" model: a voluntary code of conduct in which permanent members commit to abstaining rather than vetoing in cases of mass atrocity, verified by a rotating panel of elected members.', rejectionNote:null },
+];
+
+const SEED_USERS = [
+  { id:'u_dg', email:'director@isd.org', name:'Trevor Museti', role:'dg', deskId:null, title:'Director General' },
+  { id:'u1', email:'kwame.adeyemi@isd.org', name:'Dr. Kwame Adeyemi', role:'analyst', deskId:'desk1', title:'Senior Analyst' },
+  { id:'u2', email:'elena.voss@isd.org', name:'Dr. Elena Voss', role:'analyst', deskId:'desk2', title:'Senior Analyst' },
+  { id:'u3', email:'rahul.mehta@isd.org', name:'Dr. Rahul Mehta', role:'analyst', deskId:'desk3', title:'Senior Analyst' },
+  { id:'u4', email:'sofia.lindqvist@isd.org', name:'Amb. Sofia Lindqvist', role:'analyst', deskId:'desk4', title:'Senior Analyst' },
+  { id:'u5', email:'naledi.dube@isd.org', name:'Dr. Naledi Dube', role:'analyst', deskId:'desk5', title:'Senior Analyst' },
+  { id:'u6', email:'henri.delacroix@isd.org', name:'Amb. Henri Delacroix', role:'analyst', deskId:'desk6', title:'Senior Analyst' },
+];
+
+/* ================= STATE ================= */
+let state = {
+  loggedIn:false,
+  role:null,
+  currentUser:null,
+  activeDesk:null,
+  pendingFile:null,
+  briefs:[],
+  applications:[],
+  activity:[],
+  users:[],
+  dgTab:'pending',
+  librarySearch:'',
+  librarySort:'newest',
+};
+let rejectTargetId = null;
+let appDetailTargetId = null;
+
+/* ================= PERSISTENCE ================= */
+function loadBriefs(){
+  try{
+    const raw = localStorage.getItem(BRIEFS_KEY);
+    state.briefs = raw ? JSON.parse(raw) : SEED_BRIEFS.slice();
+    if(!raw) saveBriefs();
+  }catch(e){ state.briefs = SEED_BRIEFS.slice(); }
+}
+function saveBriefs(){ try{ localStorage.setItem(BRIEFS_KEY, JSON.stringify(state.briefs)); }catch(e){} }
+
+function loadApplications(){
+  try{ const raw = localStorage.getItem(APPS_KEY); state.applications = raw ? JSON.parse(raw) : []; }
+  catch(e){ state.applications = []; }
+}
+function saveApplications(){ try{ localStorage.setItem(APPS_KEY, JSON.stringify(state.applications)); }catch(e){} }
+
+function loadActivity(){
+  try{ const raw = localStorage.getItem(ACTIVITY_KEY); state.activity = raw ? JSON.parse(raw) : []; }
+  catch(e){ state.activity = []; }
+}
+function saveActivity(){ try{ localStorage.setItem(ACTIVITY_KEY, JSON.stringify(state.activity)); }catch(e){} }
+function logActivity(message){
+  state.activity.unshift({ id:uid(), message:message, ts:new Date().toISOString() });
+  state.activity = state.activity.slice(0, 100);
+  saveActivity();
+}
+
+function loadUsers(){
+  try{
+    const raw = localStorage.getItem(USERS_KEY);
+    state.users = raw ? JSON.parse(raw) : SEED_USERS.slice();
+    if(!raw) saveUsers();
+  }catch(e){ state.users = SEED_USERS.slice(); }
+}
+function saveUsers(){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(state.users)); }catch(e){} }
+
+/* ================= TOAST ================= */
+function showToast(msg, tone){
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  const border = tone === 'success' ? 'border-[rgba(111,207,151,0.4)]' : tone === 'error' ? 'border-red-400/40' : 'border-[rgba(197,168,128,0.4)]';
+  const color = tone === 'success' ? 'text-[#6fcf97]' : tone === 'error' ? 'text-red-300' : 'text-[#c5a880]';
+  el.className = `toast glass ${border} border rounded-sm px-5 py-3 text-sm ${color} pointer-events-auto shadow-lg max-w-[90vw]`;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(()=>{
+    el.style.transition = 'opacity .4s ease, transform .4s ease';
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-8px)';
+    setTimeout(()=>el.remove(), 400);
+  }, 2900);
+}
+
+function cardGlow(e){
+  const r = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+  e.currentTarget.style.setProperty('--my', (e.clientY - r.top) + 'px');
+}
+
+/* ================= MOBILE MENU ================= */
+function toggleMobileMenu(){
+  const menu = document.getElementById('mobileMenu');
+  if(menu.classList.contains('hidden')){
+    menu.classList.remove('hidden');
+    document.getElementById('menuIconOpen').classList.add('hidden');
+    document.getElementById('menuIconClose').classList.remove('hidden');
+  } else { closeMobileMenu(); }
+}
+function closeMobileMenu(){
+  document.getElementById('mobileMenu').classList.add('hidden');
+  document.getElementById('menuIconOpen').classList.remove('hidden');
+  document.getElementById('menuIconClose').classList.add('hidden');
+}
+
+/* ================= RENDER: PUBLIC DESKS ================= */
+function renderDesksGrid(){
+  const grid = document.getElementById('desksGrid');
+  grid.innerHTML = DESKS.map(d => `
+    <div class="card-elite rounded-md p-7" style="border-top:3px solid ${d.accent}" onmousemove="cardGlow(event)">
+      <p class="desk-number font-cinzel text-3xl mb-4" style="color:${d.accentSoft ? d.accent : ''}; opacity:.55">${d.numeral}</p>
+      <h3 class="font-serif-elite text-lg text-[#f5f2ea] leading-snug mb-2">${d.name}</h3>
+      <p class="text-[#94a3b8] text-sm leading-relaxed mb-4">${d.desc}</p>
+      <p class="text-[11px] tracking-widest text-[#5b6b82]">LED BY <span style="color:${d.accent}">${d.lead.toUpperCase()}</span></p>
+    </div>
+  `).join('');
+}
+function renderDeskLeads(){
+  const grid = document.getElementById('deskLeadsGrid');
+  grid.innerHTML = DESKS.map(d => `
+    <div class="card-elite rounded-md p-6 text-center" onmousemove="cardGlow(event)">
+      <div class="profile-frame w-16 h-16 mx-auto mb-4" style="border-color:${d.accent}88;">
+        <img src="images/leadership/${d.leadEmail.split('@')[0]}.jpg" alt="${d.lead}" onerror="this.style.display='none'">
+        <div class="frame-fallback">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${d.accent}" stroke-width="1.4" opacity="0.7"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-6.6 7-6.6s7 2.9 7 6.6" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+      <h3 class="font-serif-elite text-base text-[#f5f2ea]">${d.lead}</h3>
+      <p class="text-[11px] tracking-widest mt-1" style="color:${d.accent}">DESK ${d.numeral} DIRECTOR</p>
+      <p class="text-[#5b6b82] text-xs mt-2">${d.short}</p>
+    </div>
+  `).join('');
+}
+function renderApplyDeskOptions(){
+  const sel = document.getElementById('applyDeskSelect');
+  sel.innerHTML = '<option value="">Select a desk&hellip;</option>' + DESKS.map(d => `<option value="${d.id}">Desk ${d.numeral} &mdash; ${d.short}</option>`).join('');
+}
+
+/* ================= RENDER: LIBRARY ================= */
+let activeLibraryFilter = 'all';
+function renderLibraryFilters(){
+  const wrap = document.getElementById('libraryFilters');
+  const all = [{id:'all', numeral:null, short:'All Desks', accent:null}, ...DESKS];
+  wrap.innerHTML = all.map(d => {
+    const isActive = activeLibraryFilter === d.id;
+    const style = isActive && d.accent ? `style="border-color:${d.accent}; color:${d.accent}; background:${d.accentSoft};"` : '';
+    return `<button class="pill ${isActive?'active':''} px-4 py-2 rounded-full text-xs" ${style} onclick="setLibraryFilter('${d.id}')">
+      ${d.numeral? 'Desk '+d.numeral+' &middot; ' : ''}${d.short}
+    </button>`;
+  }).join('');
+}
+function setLibraryFilter(id){ activeLibraryFilter = id; renderLibraryFilters(); renderLibraryGrid(); }
+function setLibrarySearch(val){ state.librarySearch = val.toLowerCase(); renderLibraryGrid(); }
+function setLibrarySort(val){ state.librarySort = val; renderLibraryGrid(); }
+
+function renderLibraryGrid(){
+  const grid = document.getElementById('libraryGrid');
+  const empty = document.getElementById('libraryEmpty');
+  let published = state.briefs.filter(b => b.status === 'published');
+
+  if(activeLibraryFilter !== 'all') published = published.filter(b => b.deskId === activeLibraryFilter);
+  if(state.librarySearch){
+    published = published.filter(b =>
+      b.title.toLowerCase().includes(state.librarySearch) || b.author.toLowerCase().includes(state.librarySearch)
+    );
+  }
+  switch(state.librarySort){
+    case 'oldest': published.sort((a,b)=> new Date(a.submittedAt) - new Date(b.submittedAt)); break;
+    case 'az': published.sort((a,b)=> a.title.localeCompare(b.title)); break;
+    case 'za': published.sort((a,b)=> b.title.localeCompare(a.title)); break;
+    default: published.sort((a,b)=> new Date(b.submittedAt) - new Date(a.submittedAt));
+  }
+
+  document.getElementById('statBriefs').textContent = state.briefs.filter(b=>b.status==='published').length;
+
+  if(published.length === 0){ grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  grid.innerHTML = published.map(b => {
+    const desk = DESKS.find(d=>d.id===b.deskId);
+    const hasArticle = !!(b.articleBody && b.articleBody.trim().length > 0);
+    const hasFile = !!b.dataUri;
+    const fileLabel = b.fileKind === 'docx' ? 'Download DOCX' : 'Download PDF';
+    return `
+    <div class="card-elite rounded-md p-6 flex flex-col" style="border-top:3px solid ${desk.accent}" onmousemove="cardGlow(event)">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-[10px] tracking-widest" style="color:${desk.accent}">DESK ${desk.numeral}</span>
+        <span class="status-published text-[10px] tracking-widest border px-2.5 py-1 rounded-full">SEAL APPLIED</span>
+      </div>
+      <h3 class="font-serif-elite text-lg text-[#f5f2ea] leading-snug mb-2 flex-1">${escapeHtml(b.title)}</h3>
+      <p class="text-xs text-[#5b6b82] mb-5">${escapeHtml(b.author)} &middot; ${formatDate(b.submittedAt)}</p>
+      <div class="flex gap-2 flex-wrap">
+        ${hasArticle ? `<button onclick="openArticleReader('${b.id}')" class="btn-ghost flex-1 text-center px-4 py-2.5 rounded-sm text-xs tracking-wide">Read Article</button>` : ''}
+        ${hasFile ? `<button onclick="openBriefModal('${b.id}')" class="btn-outline-slate flex-1 text-center px-4 py-2.5 rounded-sm text-xs tracking-wide">${fileLabel} &#10142;</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openBriefModal(id){
+  const b = state.briefs.find(x=>x.id===id);
+  if(!b) return;
+  const desk = DESKS.find(d=>d.id===b.deskId);
+  document.getElementById('briefModalDesk').textContent = `DESK ${desk.numeral} — ${desk.short.toUpperCase()}`;
+  document.getElementById('briefModalTitle').textContent = b.title;
+  document.getElementById('briefModalMeta').textContent = `${b.author} · Sealed ${formatDate(b.submittedAt)} · ${b.fileName}`;
+  const dl = document.getElementById('briefModalDownload');
+  if(b.dataUri){
+    dl.href = b.dataUri;
+    dl.download = b.fileName || (b.title + (b.fileKind==='docx' ? '.docx' : '.pdf'));
+    dl.classList.remove('opacity-50','pointer-events-none');
+    dl.textContent = b.fileKind==='docx' ? 'Download DOCX ➔' : 'Download PDF ➔';
+  } else {
+    dl.href = '#'; dl.removeAttribute('download');
+    dl.classList.add('opacity-50','pointer-events-none');
+    dl.textContent = 'No file attached to this archival record';
+  }
+  document.getElementById('briefModal').classList.remove('hidden');
+  document.getElementById('briefModal').classList.add('flex');
+}
+function closeBriefModal(){
+  document.getElementById('briefModal').classList.add('hidden');
+  document.getElementById('briefModal').classList.remove('flex');
+}
+
+/* ================= FORUM-STYLE ARTICLE READER ================= */
+function openArticleReader(id){
+  const b = state.briefs.find(x=>x.id===id);
+  if(!b) return;
+  const desk = DESKS.find(d=>d.id===b.deskId);
+  const deskEl = document.getElementById('articleReaderDesk');
+  deskEl.textContent = `DESK ${desk.numeral} — ${desk.short.toUpperCase()}`;
+  deskEl.style.color = desk.accent;
+  document.getElementById('articleReaderTitle').textContent = b.title;
+  document.getElementById('articleReaderMeta').textContent = `${b.author} · Sealed ${formatDate(b.submittedAt)}`;
+  const bodyEl = document.getElementById('articleReaderBody');
+  const paras = (b.articleBody || '').split(/\n+/).filter(p => p.trim().length > 0);
+  bodyEl.innerHTML = paras.map(p => `<p>${escapeHtml(p)}</p>`).join('');
+  const fileWrap = document.getElementById('articleReaderFileLink');
+  if(b.dataUri){
+    fileWrap.classList.remove('hidden');
+    fileWrap.innerHTML = `<a href="${b.dataUri}" download="${escapeHtml(b.fileName || ('brief.' + (b.fileKind||'pdf')))}" class="btn-ghost inline-block px-5 py-2.5 rounded-sm text-xs tracking-wide">Download Full Package (${b.fileKind==='docx'?'DOCX':'PDF'}) &#10142;</a>`;
+  } else {
+    fileWrap.classList.add('hidden'); fileWrap.innerHTML = '';
+  }
+  document.getElementById('articleReaderModal').classList.remove('hidden');
+  document.getElementById('articleReaderModal').classList.add('flex');
+}
+function closeArticleReader(){
+  document.getElementById('articleReaderModal').classList.add('hidden');
+  document.getElementById('articleReaderModal').classList.remove('flex');
+}
+
+/* ================= UTIL ================= */
+function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str == null ? '' : str; return d.innerHTML; }
+function formatDate(iso){ const d = new Date(iso); if(isNaN(d)) return iso; return d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }); }
+function formatDateTime(iso){ const d = new Date(iso); if(isNaN(d)) return iso; return d.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' at ' + d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' }); }
+function uid(){ return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2,8); }
+function nameFromEmail(email){
+  const local = email.split('@')[0].replace(/[._]+/g,' ');
+  return local.replace(/\b\w/g, c => c.toUpperCase());
+}
+
+/* ================= APPLY MODAL ================= */
+function openApplyModal(){ document.getElementById('applyModal').classList.remove('hidden'); document.getElementById('applyModal').classList.add('flex'); }
+function closeApplyModal(){ document.getElementById('applyModal').classList.add('hidden'); document.getElementById('applyModal').classList.remove('flex'); }
+function clearApplyErrors(){
+  ['applyName','applyEmail','applyDeskSelect','applyStatement'].forEach(id => document.getElementById(id).classList.remove('field-invalid'));
+  ['applyNameError','applyEmailError','applyDeskError','applyStatementError'].forEach(id => document.getElementById(id).classList.add('hidden'));
+}
+function submitApplication(e){
+  e.preventDefault();
+  clearApplyErrors();
+  const name = document.getElementById('applyName').value.trim();
+  const email = document.getElementById('applyEmail').value.trim();
+  const deskId = document.getElementById('applyDeskSelect').value;
+  const statement = document.getElementById('applyStatement').value.trim();
+  let valid = true;
+  if(name.length < 2){ document.getElementById('applyName').classList.add('field-invalid'); document.getElementById('applyNameError').classList.remove('hidden'); valid = false; }
+  if(!EMAIL_RE.test(email)){ document.getElementById('applyEmail').classList.add('field-invalid'); document.getElementById('applyEmailError').classList.remove('hidden'); valid = false; }
+  if(!deskId){ document.getElementById('applyDeskSelect').classList.add('field-invalid'); document.getElementById('applyDeskError').classList.remove('hidden'); valid = false; }
+  if(statement.length < 20){ document.getElementById('applyStatement').classList.add('field-invalid'); document.getElementById('applyStatementError').classList.remove('hidden'); valid = false; }
+  if(!valid) return;
+
+  const application = { id:uid(), name, email, deskId, statement, status:'pending', submittedAt:new Date().toISOString() };
+  state.applications.unshift(application);
+  saveApplications();
+  logActivity(`New scholar application from ${name} for Desk ${DESKS.find(d=>d.id===deskId).numeral}.`);
+
+  closeApplyModal();
+  document.getElementById('applyForm').reset();
+  clearApplyErrors();
+  showToast('Application received. The Secretariat will review your statement of interest.', 'success');
+  if(state.loggedIn && state.role === 'dg'){ renderApplicationsList(); updateDgTabBadges(); }
+}
+
+/* ================= PORTAL MODAL ================= */
+function openPortalModal(){
+  document.getElementById('portalModal').classList.remove('hidden');
+  document.getElementById('portalModal').classList.add('flex');
+  refreshPortalView();
+}
+function closePortalModal(){
+  document.getElementById('portalModal').classList.add('hidden');
+  document.getElementById('portalModal').classList.remove('flex');
+}
+
+/* ================= HIGH-TIER LOGIN VALIDATION + SECURE HANDSHAKE ================= */
+function validateLoginEmailLive(){
+  const val = document.getElementById('loginEmail').value.trim();
+  const el = document.getElementById('loginEmail');
+  const err = document.getElementById('loginEmailError');
+  if(val.length === 0){ el.classList.remove('field-invalid'); err.classList.add('hidden'); return true; }
+  const ok = EMAIL_RE.test(val);
+  el.classList.toggle('field-invalid', !ok);
+  err.classList.toggle('hidden', ok);
+  return ok;
+}
+function validateLoginKeyLive(){
+  const val = document.getElementById('loginKey').value;
+  const el = document.getElementById('loginKey');
+  const err = document.getElementById('loginKeyError');
+  if(val.length === 0){ el.classList.remove('field-invalid'); err.classList.add('hidden'); return true; }
+  const ok = val.length >= 4;
+  el.classList.toggle('field-invalid', !ok);
+  err.classList.toggle('hidden', ok);
+  return ok;
+}
+
+function attemptLogin(e){
+  e.preventDefault();
+  const emailOk = validateLoginEmailLive();
+  const keyOk = validateLoginKeyLive();
+  const email = document.getElementById('loginEmail').value.trim();
+  const key = document.getElementById('loginKey').value.trim();
+  const errorEl = document.getElementById('loginError');
+  errorEl.classList.add('hidden');
+
+  if(email.length === 0 || !emailOk){
+    document.getElementById('loginEmail').classList.add('field-invalid');
+    document.getElementById('loginEmailError').classList.remove('hidden');
+    return;
+  }
+  if(key.length === 0 || !keyOk){
+    document.getElementById('loginKey').classList.add('field-invalid');
+    document.getElementById('loginKeyError').classList.remove('hidden');
+    return;
+  }
+
+  const btn = document.getElementById('loginSubmitBtn');
+  const loader = document.getElementById('loginBtnLoader');
+  const label = document.getElementById('loginBtnLabel');
+  btn.disabled = true;
+  loader.classList.remove('hidden');
+  label.textContent = 'Establishing Handshake…';
+
+  setTimeout(()=>{
+    const emailLower = email.toLowerCase();
+
+    if(emailLower === DG_CREDENTIALS.email && key === DG_CREDENTIALS.key){
+      state.loggedIn = true; state.role = 'dg';
+      state.currentUser = state.users.find(u=>u.role==='dg') || { name:'Trevor Museti', role:'dg', title:'Director General', email:DG_CREDENTIALS.email, deskId:null };
+      finishLoginSuccess('Director-General credentials verified. Welcome back.');
+      return;
+    }
+    if(key === SCHOLAR_KEY && EMAIL_RE.test(emailLower)){
+      state.loggedIn = true; state.role = 'scholar';
+      const matched = state.users.find(u => u.email.toLowerCase() === emailLower);
+      if(matched){
+        state.currentUser = matched;
+        state.activeDesk = matched.deskId || null;
+      } else {
+        state.currentUser = { id:uid(), email:emailLower, name:nameFromEmail(emailLower), role:'analyst', deskId:null, title:'Senior Analyst' };
+        state.activeDesk = null;
+      }
+      finishLoginSuccess(matched ? `Welcome back, ${matched.name.split(' ').pop()}. Routed to your desk.` : 'Scholar access granted.');
+      return;
+    }
+
+    btn.disabled = false;
+    loader.classList.add('hidden');
+    label.textContent = 'Verify & Enter';
+    errorEl.textContent = 'Invalid credentials. Verify your access key and try again.';
+    errorEl.classList.remove('hidden');
+  }, 900);
+}
+
+function finishLoginSuccess(toastMsg){
+  const btn = document.getElementById('loginSubmitBtn');
+  const loader = document.getElementById('loginBtnLoader');
+  const label = document.getElementById('loginBtnLabel');
+  btn.disabled = false;
+  loader.classList.add('hidden');
+  label.textContent = 'Verify & Enter';
+  showToast(toastMsg, 'success');
+  refreshPortalView();
+}
+
+function portalLogout(){
+  state.loggedIn = false; state.role = null; state.currentUser = null; state.activeDesk = null; state.pendingFile = null;
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginKey').value = '';
+  document.getElementById('loginEmail').classList.remove('field-invalid');
+  document.getElementById('loginKey').classList.remove('field-invalid');
+  document.getElementById('loginEmailError').classList.add('hidden');
+  document.getElementById('loginKeyError').classList.add('hidden');
+  document.getElementById('loginError').classList.add('hidden');
+  refreshPortalView();
+  showToast('Logged out of the Member Portal.', null);
+}
+
+function refreshPortalView(){
+  const authPanel = document.getElementById('authPanel');
+  const workspacePanel = document.getElementById('workspacePanel');
+  const roleBadge = document.getElementById('portalRoleBadge');
+  const logoutBtn = document.getElementById('portalLogoutBtn');
+  const subtitle = document.getElementById('portalSubtitle');
+  const dgPanel = document.getElementById('dgPanel');
+
+  if(!state.loggedIn){
+    authPanel.classList.remove('hidden');
+    workspacePanel.classList.add('hidden');
+    roleBadge.classList.add('hidden');
+    logoutBtn.classList.add('hidden');
+    subtitle.textContent = 'Credentialed access only';
+    return;
+  }
+
+  authPanel.classList.add('hidden');
+  workspacePanel.classList.remove('hidden');
+  logoutBtn.classList.remove('hidden');
+  roleBadge.classList.remove('hidden');
+
+  renderIdentityBanner();
+
+  if(state.role === 'dg'){
+    roleBadge.textContent = 'DIRECTOR-GENERAL';
+    roleBadge.className = 'text-[10px] tracking-widest px-3 py-1.5 rounded-full border status-published';
+    subtitle.textContent = 'Executive command access';
+    dgPanel.classList.remove('hidden');
+    switchDgTab(state.dgTab || 'pending');
+  } else {
+    roleBadge.textContent = 'SCHOLAR';
+    roleBadge.className = 'text-[10px] tracking-widest px-3 py-1.5 rounded-full border status-pending';
+    subtitle.textContent = 'Scholar workspace access';
+    dgPanel.classList.add('hidden');
+  }
+
+  renderWorkspaceDeskGrid();
+  if(state.activeDesk){ showDeskWorkStage(); }
+  else {
+    document.getElementById('deskSelectStage').classList.remove('hidden');
+    document.getElementById('deskWorkStage').classList.add('hidden');
+  }
+}
+
+/* ================= PREMIUM IDENTITY / GREETING LAYER ================= */
+function renderIdentityBanner(){
+  const wrap = document.getElementById('identityBanner');
+  const user = state.currentUser;
+  if(!user){ wrap.innerHTML = ''; return; }
+
+  if(user.role === 'dg'){
+    wrap.style.borderLeftColor = 'var(--gold)';
+    wrap.style.background = 'linear-gradient(90deg, rgba(197,168,128,0.09), transparent)';
+    wrap.innerHTML = `
+      <div class="flex items-center gap-4">
+        <span class="seal w-11 h-11">
+          <svg viewBox="0 0 100 100" width="44" height="44">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#c5a880" stroke-width="1.4" opacity="0.55"/>
+            <text x="50" y="57" text-anchor="middle" font-family="Cinzel, serif" font-size="28" fill="#c5a880">DG</text>
+          </svg>
+        </span>
+        <div>
+          <p class="font-serif-elite text-xl text-[#f5f2ea]">Welcome, ${escapeHtml(user.name)}</p>
+          <p class="text-xs gold-text tracking-widest mt-0.5">DIRECTOR GENERAL</p>
+        </div>
+      </div>
+      <span class="text-[10px] tracking-widest text-[#5b6b82] hidden sm:inline">EXECUTIVE COMMAND ACCESS</span>
+    `;
+  } else {
+    const desk = DESKS.find(d => d.id === user.deskId);
+    const accent = desk ? desk.accent : '#94a3b8';
+    const accentSoft = desk ? desk.accentSoft : 'rgba(148,163,184,0.10)';
+    const title = desk ? `Senior Analyst, Desk ${desk.numeral} — ${desk.short}` : 'Awaiting Desk Assignment';
+    wrap.style.borderLeftColor = accent;
+    wrap.style.background = `linear-gradient(90deg, ${accentSoft}, transparent)`;
+    wrap.innerHTML = `
+      <div class="flex items-center gap-4">
+        <div class="profile-frame w-11 h-11" style="border-color:${accent}88;">
+          <div class="frame-fallback">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${accent}" stroke-width="1.5" opacity="0.8"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-6.6 7-6.6s7 2.9 7 6.6" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div>
+          <p class="font-serif-elite text-xl text-[#f5f2ea]">Welcome, ${escapeHtml(user.name)}</p>
+          <p class="text-xs tracking-widest mt-0.5" style="color:${accent}">${title.toUpperCase()}</p>
+        </div>
+      </div>
+      ${desk ? `<span class="text-[10px] tracking-widest border px-3 py-1.5 rounded-full" style="color:${accent}; border-color:${accent}55; background:${accentSoft}">DESK ${desk.numeral} PARTITION</span>` : ''}
+    `;
+  }
+}
+
+function renderWorkspaceDeskGrid(){
+  const grid = document.getElementById('workspaceDeskGrid');
+  grid.innerHTML = DESKS.map(d => {
+    const count = state.briefs.filter(b=>b.deskId===d.id).length;
+    return `
+    <button onclick="setActiveDesk('${d.id}')" class="card-elite rounded-md p-5 text-left" style="border-top:3px solid ${d.accent}" onmousemove="cardGlow(event)">
+      <p class="desk-number font-cinzel text-xl mb-2" style="color:${d.accent}; opacity:.6">${d.numeral}</p>
+      <p class="font-serif-elite text-[#f5f2ea] text-[15px] leading-snug mb-2">${d.short}</p>
+      <p class="text-[11px] text-[#5b6b82]">${count} submission${count===1?'':'s'} on record</p>
+    </button>`;
+  }).join('');
+}
+
+function setActiveDesk(deskId){
+  state.activeDesk = deskId;
+  state.pendingFile = null;
+  document.getElementById('briefTitleInput').value = '';
+  document.getElementById('articleBodyInput').value = '';
+  updateWordCount();
+  resetDropZone();
+  showDeskWorkStage();
+}
+function clearActiveDesk(){
+  state.activeDesk = null;
+  document.getElementById('deskSelectStage').classList.remove('hidden');
+  document.getElementById('deskWorkStage').classList.add('hidden');
+}
+function showDeskWorkStage(){
+  const desk = DESKS.find(d=>d.id===state.activeDesk);
+  document.getElementById('deskSelectStage').classList.add('hidden');
+  document.getElementById('deskWorkStage').classList.remove('hidden');
+  document.getElementById('workDeskLabel').textContent = `DESK ${desk.numeral} — ACTIVE CONTEXT`;
+  document.getElementById('workDeskLabel').style.color = desk.accent;
+  document.getElementById('workDeskName').textContent = desk.name;
+
+  const btn = document.getElementById('submitBriefBtn');
+  btn.classList.remove('btn-gold');
+  btn.classList.add('btn-accent');
+  btn.style.setProperty('--accent-color', desk.accent);
+
+  renderMyDeskBriefs();
+}
+
+function renderMyDeskBriefs(){
+  const list = document.getElementById('myDeskBriefsList');
+  const items = state.briefs.filter(b=>b.deskId===state.activeDesk).sort((a,b)=> new Date(b.submittedAt)-new Date(a.submittedAt));
+  if(items.length === 0){ list.innerHTML = `<p class="text-sm text-[#5b6b82] py-6 text-center">No submissions yet for this desk.</p>`; return; }
+  list.innerHTML = items.map(b => {
+    const statusClass = b.status==='published' ? 'status-published' : b.status==='rejected' ? 'status-rejected' : 'status-pending';
+    const statusLabel = b.status==='published' ? 'SEAL APPLIED' : b.status==='rejected' ? 'RETURNED' : 'PENDING';
+    const formatTags = [b.articleBody && b.articleBody.trim() ? 'Article' : null, b.fileName ? (b.fileKind==='docx'?'DOCX':'PDF') : null].filter(Boolean).join(' + ');
+    return `
+    <div class="rounded-md px-5 py-4 border divider-gold bg-white/[0.015]">
+      <div class="flex items-center justify-between gap-4">
+        <div class="min-w-0">
+          <p class="text-sm text-[#f1eee7] truncate">${escapeHtml(b.title)}</p>
+          <p class="text-[11px] text-[#5b6b82] mt-0.5">${escapeHtml(b.author)} &middot; ${formatDate(b.submittedAt)}${formatTags ? ' &middot; ' + formatTags : ''}</p>
+        </div>
+        <span class="${statusClass} text-[10px] tracking-widest border px-2.5 py-1 rounded-full shrink-0">${statusLabel}</span>
+      </div>
+      ${b.status==='rejected' && b.rejectionNote ? `<p class="text-xs text-[#e07a6b] mt-3 leading-relaxed border-t divider-gold pt-3">Note from the Director-General: ${escapeHtml(b.rejectionNote)}</p>` : ''}
+      ${b.status==='rejected' ? `<button onclick="removeBrief('${b.id}')" class="btn-outline-slate text-xs px-3.5 py-1.5 rounded-sm mt-3">Remove &amp; Resubmit</button>` : ''}
+    </div>`;
+  }).join('');
+}
+function removeBrief(id){
+  const brief = state.briefs.find(b=>b.id===id);
+  state.briefs = state.briefs.filter(b=>b.id!==id);
+  saveBriefs();
+  if(brief) logActivity(`"${brief.title}" removed from Desk ${DESKS.find(d=>d.id===brief.deskId).numeral} for resubmission.`);
+  renderMyDeskBriefs();
+  renderWorkspaceDeskGrid();
+  showToast('Brief removed. You can now submit a revised version.', null);
+}
+
+/* ================= ARTICLE EDITOR ================= */
+function updateWordCount(){
+  const val = document.getElementById('articleBodyInput').value.trim();
+  const count = val.length === 0 ? 0 : val.split(/\s+/).length;
+  document.getElementById('articleWordCount').textContent = `${count} word${count===1?'':'s'}`;
+}
+
+/* ================= DRAG & DROP UPLOAD (PDF + DOCX) ================= */
+function handleDragOver(e){ e.preventDefault(); document.getElementById('dropZone').classList.add('drag-active'); }
+function handleDragLeave(e){ e.preventDefault(); document.getElementById('dropZone').classList.remove('drag-active'); }
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag-active');
+  const files = e.dataTransfer.files;
+  if(files && files.length) processFile(files[0]);
+}
+function handleFileSelect(e){
+  const files = e.target.files;
+  if(files && files.length) processFile(files[0]);
+}
+function processFile(file){
+  const msg = document.getElementById('submitBriefMsg');
+  const name = file.name.toLowerCase();
+  const isPdf = file.type === 'application/pdf' || name.endsWith('.pdf');
+  const isDocx = file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || name.endsWith('.docx');
+
+  if(!isPdf && !isDocx){
+    msg.textContent = 'Only PDF or Word (.docx) files are accepted.';
+    msg.classList.remove('hidden');
+    return;
+  }
+  if(file.size > 20 * 1024 * 1024){
+    msg.textContent = 'File exceeds the 20MB submission limit.';
+    msg.classList.remove('hidden');
+    return;
+  }
+  msg.classList.add('hidden');
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    state.pendingFile = { name:file.name, dataUri:ev.target.result, kind: isPdf ? 'pdf' : 'docx' };
+    showFileReady(file.name);
+  };
+  reader.onerror = function(){
+    msg.textContent = 'Could not read this file. Please try again.';
+    msg.classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+}
+function showFileReady(name){
+  document.getElementById('dropZoneIdle').classList.add('hidden');
+  const fileBox = document.getElementById('dropZoneFile');
+  fileBox.classList.remove('hidden');
+  fileBox.classList.add('flex');
+  document.getElementById('dropZoneFileName').textContent = name;
+  document.getElementById('dropZone').classList.add('file-ready');
+}
+function resetDropZone(){
+  document.getElementById('dropZoneIdle').classList.remove('hidden');
+  const fileBox = document.getElementById('dropZoneFile');
+  fileBox.classList.add('hidden');
+  fileBox.classList.remove('flex');
+  document.getElementById('dropZone').classList.remove('file-ready');
+  document.getElementById('fileInput').value = '';
+}
+
+function submitBrief(){
+  const msg = document.getElementById('submitBriefMsg');
+  const btn = document.getElementById('submitBriefBtn');
+  const title = document.getElementById('briefTitleInput').value.trim();
+  const articleBody = document.getElementById('articleBodyInput').value.trim();
+
+  if(!title){ msg.textContent = 'A brief title is required before submission.'; msg.classList.remove('hidden'); return; }
+  if(articleBody.length < 40 && !state.pendingFile){
+    msg.textContent = 'Provide article text (min. 40 characters) or attach a PDF/DOCX file.';
+    msg.classList.remove('hidden');
+    return;
+  }
+  msg.classList.add('hidden');
+  btn.disabled = true;
+  const originalLabel = btn.textContent;
+  btn.textContent = 'Submitting…';
+
+  setTimeout(()=>{
+    const authorLabel = state.currentUser ? state.currentUser.name : (state.role === 'dg' ? 'Director-General' : 'Scholar');
+    const desk = DESKS.find(d=>d.id===state.activeDesk);
+    const brief = {
+      id:uid(), deskId:state.activeDesk, title, author:authorLabel,
+      status:'pending', submittedAt:new Date().toISOString().slice(0,10),
+      fileName: state.pendingFile ? state.pendingFile.name : null,
+      dataUri: state.pendingFile ? state.pendingFile.dataUri : null,
+      fileKind: state.pendingFile ? state.pendingFile.kind : null,
+      articleBody: articleBody.length > 0 ? articleBody : null,
+      rejectionNote:null,
+    };
+    state.briefs.push(brief);
+    saveBriefs();
+    logActivity(`"${title}" submitted to Desk ${desk.numeral} by ${authorLabel}.`);
+
+    document.getElementById('briefTitleInput').value = '';
+    document.getElementById('articleBodyInput').value = '';
+    updateWordCount();
+    state.pendingFile = null;
+    resetDropZone();
+    renderMyDeskBriefs();
+    renderWorkspaceDeskGrid();
+    if(state.role === 'dg'){ renderPendingQueue(); updateDgTabBadges(); }
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+    showToast('Brief submitted to the Director-General\'s review queue.', 'success');
+  }, 450);
+}
+
+/* ================= DG TABS ================= */
+function switchDgTab(tab){
+  state.dgTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
+  document.getElementById('dgTabPending').classList.toggle('hidden', tab !== 'pending');
+  document.getElementById('dgTabApplications').classList.toggle('hidden', tab !== 'applications');
+  document.getElementById('dgTabActivity').classList.toggle('hidden', tab !== 'activity');
+  if(tab === 'pending') renderPendingQueue();
+  if(tab === 'applications') renderApplicationsList();
+  if(tab === 'activity') renderActivityLog();
+  updateDgTabBadges();
+}
+function updateDgTabBadges(){
+  const pendingCount = state.briefs.filter(b=>b.status==='pending').length;
+  const appsCount = state.applications.filter(a=>a.status==='pending').length;
+  const pb = document.getElementById('tabBadgePending');
+  const ab = document.getElementById('tabBadgeApps');
+  if(pendingCount > 0){ pb.textContent = pendingCount; pb.classList.remove('hidden'); } else { pb.classList.add('hidden'); }
+  if(appsCount > 0){ ab.textContent = appsCount; ab.classList.remove('hidden'); } else { ab.classList.add('hidden'); }
+}
+
+/* ================= DG: PENDING BRIEFS ================= */
+function renderPendingQueue(){
+  const list = document.getElementById('pendingQueueList');
+  const empty = document.getElementById('pendingQueueEmpty');
+  const pending = state.briefs.filter(b=>b.status==='pending').sort((a,b)=> new Date(a.submittedAt)-new Date(b.submittedAt));
+  if(pending.length === 0){ list.innerHTML = ''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  list.innerHTML = pending.map(b => {
+    const desk = DESKS.find(d=>d.id===b.deskId);
+    const formatTags = [b.articleBody && b.articleBody.trim() ? 'Article' : null, b.fileName ? (b.fileKind==='docx'?'DOCX':'PDF') : null].filter(Boolean).join(' + ');
+    return `
+    <div id="pending-${b.id}" class="rounded-md px-5 py-4 border divider-gold bg-white/[0.015]">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="min-w-0">
+          <p class="text-[10px] tracking-widest mb-1" style="color:${desk.accent}">DESK ${desk.numeral} &middot; ${desk.short.toUpperCase()}</p>
+          <p class="text-sm text-[#f1eee7] truncate">${escapeHtml(b.title)}</p>
+          <p class="text-[11px] text-[#5b6b82] mt-0.5">${escapeHtml(b.author)} &middot; ${formatDate(b.submittedAt)}${formatTags ? ' &middot; ' + formatTags : ''}</p>
+        </div>
+        <div class="flex gap-2 shrink-0 flex-wrap">
+          <button onclick="openSubmissionPreview('${b.id}')" class="btn-outline-slate text-xs tracking-wide px-3.5 py-2 rounded-sm">Preview Submission</button>
+          <button onclick="openRejectModal('${b.id}')" class="btn-reject text-xs tracking-wide px-3.5 py-2 rounded-sm">Return for Revision</button>
+          <button onclick="applyExecutiveSeal('${b.id}')" class="btn-gold text-xs tracking-wide px-4 py-2 rounded-sm">Apply Executive Seal</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function applyExecutiveSeal(id){
+  const brief = state.briefs.find(b=>b.id===id);
+  if(!brief) return;
+  const row = document.getElementById('pending-'+id);
+  if(row){ row.style.transition = 'opacity .35s ease, transform .35s ease'; row.style.opacity = '0'; row.style.transform = 'translateX(12px)'; }
+  setTimeout(()=>{
+    brief.status = 'published';
+    brief.rejectionNote = null;
+    saveBriefs();
+    logActivity(`Executive Seal applied to "${brief.title}" — now public.`);
+    renderPendingQueue();
+    renderMyDeskBriefs();
+    renderLibraryGrid();
+    updateDgTabBadges();
+    showToast(`Executive Seal applied — "${brief.title}" is now in the public record.`, 'success');
+  }, 320);
+}
+
+function openRejectModal(id){
+  rejectTargetId = id;
+  const brief = state.briefs.find(b=>b.id===id);
+  document.getElementById('rejectModalTitle').textContent = brief ? brief.title : '';
+  document.getElementById('rejectReasonInput').value = '';
+  document.getElementById('rejectReasonError').classList.add('hidden');
+  document.getElementById('rejectReasonInput').classList.remove('field-invalid');
+  document.getElementById('rejectModal').classList.remove('hidden');
+  document.getElementById('rejectModal').classList.add('flex');
+}
+function closeRejectModal(){
+  document.getElementById('rejectModal').classList.add('hidden');
+  document.getElementById('rejectModal').classList.remove('flex');
+  rejectTargetId = null;
+}
+function confirmReject(){
+  const reason = document.getElementById('rejectReasonInput').value.trim();
+  if(reason.length < 5){
+    document.getElementById('rejectReasonError').classList.remove('hidden');
+    document.getElementById('rejectReasonInput').classList.add('field-invalid');
+    return;
+  }
+  const brief = state.briefs.find(b=>b.id===rejectTargetId);
+  if(brief){
+    brief.status = 'rejected';
+    brief.rejectionNote = reason;
+    saveBriefs();
+    logActivity(`"${brief.title}" returned for revision by the Director-General.`);
+    renderPendingQueue();
+    renderMyDeskBriefs();
+    updateDgTabBadges();
+    showToast(`"${brief.title}" returned to the scholar for revision.`, null);
+  }
+  closeRejectModal();
+}
+
+/* ================= DG: SUBMISSION PREVIEW (article + PDF + DOCX) ================= */
+function openSubmissionPreview(id){
+  const b = state.briefs.find(x=>x.id===id);
+  if(!b) return;
+  const desk = DESKS.find(d=>d.id===b.deskId);
+  document.getElementById('pdfPreviewDesk').textContent = `DESK ${desk.numeral} — ${desk.short.toUpperCase()}`;
+  document.getElementById('pdfPreviewTitle').textContent = b.title;
+
+  const articleWrap = document.getElementById('pdfPreviewArticle');
+  if(b.articleBody && b.articleBody.trim()){
+    const paras = b.articleBody.split(/\n+/).filter(p => p.trim());
+    articleWrap.innerHTML = paras.map(p => `<p>${escapeHtml(p)}</p>`).join('');
+    articleWrap.classList.remove('hidden');
+  } else {
+    articleWrap.classList.add('hidden');
+    articleWrap.innerHTML = '';
+  }
+
+  const frame = document.getElementById('pdfPreviewFrame');
+  const none = document.getElementById('pdfPreviewNone');
+
+  if(b.dataUri && b.fileKind === 'pdf'){
+    frame.src = b.dataUri;
+    frame.classList.remove('hidden');
+    none.classList.add('hidden');
+    none.innerHTML = '';
+  } else if(b.dataUri && b.fileKind === 'docx'){
+    frame.src = ''; frame.classList.add('hidden');
+    none.classList.remove('hidden');
+    none.innerHTML = `<div class="text-center py-10">
+      <p class="text-sm text-[#e7e9ee] mb-2">${escapeHtml(b.fileName)}</p>
+      <p class="text-xs text-[#5b6b82] mb-4">Word documents can't be previewed inline. Download the package to review it.</p>
+      <a href="${b.dataUri}" download="${escapeHtml(b.fileName)}" class="btn-ghost inline-block px-5 py-2.5 rounded-sm text-xs tracking-wide">Download to Review</a>
+    </div>`;
+  } else {
+    frame.src = ''; frame.classList.add('hidden');
+    none.classList.remove('hidden');
+    none.innerHTML = `<p class="text-center text-sm text-[#5b6b82] py-10">No file package attached — review the typed article text above.</p>`;
+  }
+
+  document.getElementById('pdfPreviewModal').classList.remove('hidden');
+  document.getElementById('pdfPreviewModal').classList.add('flex');
+}
+function closePdfPreviewModal(){
+  document.getElementById('pdfPreviewModal').classList.add('hidden');
+  document.getElementById('pdfPreviewModal').classList.remove('flex');
+  document.getElementById('pdfPreviewFrame').src = '';
+}
+
+/* ================= DG: APPLICATIONS + AUTOMATED TEAM SCALING ================= */
+function renderApplicationsList(){
+  const list = document.getElementById('applicationsList');
+  const empty = document.getElementById('applicationsEmpty');
+  const apps = state.applications.slice().sort((a,b)=> new Date(b.submittedAt) - new Date(a.submittedAt));
+  if(apps.length === 0){ list.innerHTML = ''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  list.innerHTML = apps.map(a => {
+    const desk = DESKS.find(d=>d.id===a.deskId);
+    const statusClass = a.status==='accepted' ? 'status-published' : a.status==='declined' ? 'status-rejected' : 'status-pending';
+    return `
+    <div class="rounded-md px-5 py-4 border divider-gold bg-white/[0.015] cursor-pointer" onclick="openAppDetailModal('${a.id}')">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="min-w-0">
+          <p class="text-[10px] tracking-widest mb-1" style="color:${desk.accent}">DESK ${desk.numeral} &middot; ${desk.short.toUpperCase()}</p>
+          <p class="text-sm text-[#f1eee7]">${escapeHtml(a.name)}</p>
+          <p class="text-[11px] text-[#5b6b82] mt-0.5">${escapeHtml(a.email)} &middot; ${formatDate(a.submittedAt)}</p>
+        </div>
+        <span class="${statusClass} text-[10px] tracking-widest border px-2.5 py-1 rounded-full shrink-0">${a.status.toUpperCase()}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openAppDetailModal(id){
+  const a = state.applications.find(x=>x.id===id);
+  if(!a) return;
+  appDetailTargetId = id;
+  const desk = DESKS.find(d=>d.id===a.deskId);
+  document.getElementById('appDetailDesk').textContent = `DESK ${desk.numeral} — ${desk.short.toUpperCase()}`;
+  document.getElementById('appDetailName').textContent = a.name;
+  document.getElementById('appDetailEmail').textContent = a.email;
+  document.getElementById('appDetailStatement').textContent = a.statement;
+
+  const actions = document.getElementById('appDetailActions');
+  if(a.status === 'pending'){
+    actions.innerHTML = `
+      <button onclick="decideApplication('${a.id}','declined')" class="btn-reject flex-1 py-2.5 rounded-sm text-sm">Decline</button>
+      <button onclick="decideApplication('${a.id}','accepted')" class="btn-gold flex-1 py-2.5 rounded-sm text-sm">Accept Scholar</button>
+    `;
+  } else {
+    actions.innerHTML = `<p class="text-xs text-[#5b6b82] w-full text-center py-2">This application was already marked <span class="${a.status==='accepted'?'text-[#6fcf97]':'text-[#e07a6b]'}">${a.status}</span>.</p>`;
+  }
+  document.getElementById('appDetailModal').classList.remove('hidden');
+  document.getElementById('appDetailModal').classList.add('flex');
+}
+function closeAppDetailModal(){
+  document.getElementById('appDetailModal').classList.add('hidden');
+  document.getElementById('appDetailModal').classList.remove('flex');
+  appDetailTargetId = null;
+}
+
+function decideApplication(id, decision){
+  const a = state.applications.find(x=>x.id===id);
+  if(!a) return;
+  a.status = decision;
+  saveApplications();
+
+  if(decision === 'accepted'){
+    const desk = DESKS.find(d=>d.id===a.deskId);
+    const exists = state.users.find(u => u.email.toLowerCase() === a.email.toLowerCase());
+    if(!exists){
+      state.users.push({ id:uid(), email:a.email, name:a.name, role:'analyst', deskId:a.deskId, title:'Senior Analyst' });
+      saveUsers();
+    }
+    logActivity(`${a.name} accepted and auto-provisioned to the Desk ${desk.numeral} roster.`);
+    showToast(`${a.name} accepted — auto-provisioned to Desk ${desk.numeral}. They can log in with key 1234.`, 'success');
+  } else {
+    logActivity(`Application from ${a.name} declined by the Director-General.`);
+    showToast(`${a.name}'s application was declined.`, null);
+  }
+  renderApplicationsList();
+  updateDgTabBadges();
+  closeAppDetailModal();
+}
+
+/* ================= DG: ACTIVITY LOG ================= */
+function renderActivityLog(){
+  const list = document.getElementById('activityLogList');
+  const empty = document.getElementById('activityLogEmpty');
+  if(state.activity.length === 0){ list.innerHTML = ''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  list.innerHTML = state.activity.map(item => `
+    <div class="activity-item">
+      <p class="text-sm text-[#e7e9ee]">${escapeHtml(item.message)}</p>
+      <p class="text-[11px] text-[#5b6b82] mt-0.5">${formatDateTime(item.ts)}</p>
+    </div>
+  `).join('');
+}
+
+/* ================= INIT ================= */
+document.addEventListener('DOMContentLoaded', function(){
+  loadUsers();
+  loadBriefs();
+  loadApplications();
+  loadActivity();
+  renderDesksGrid();
+  renderDeskLeads();
+  renderApplyDeskOptions();
+  renderLibraryFilters();
+  renderLibraryGrid();
+});
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){
+    closeApplyModal();
+    closePortalModal();
+    closeBriefModal();
+    closeArticleReader();
+    closePdfPreviewModal();
+    closeRejectModal();
+    closeAppDetailModal();
+  }
+});
+</script>
+</body>
+</html>
