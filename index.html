@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Institute for Strategic Diplomacy</title>
+
+<!-- Supabase CDN Script -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -480,35 +483,70 @@
       </div>
     </div>
 
-    <div class="p-7">
-      <!-- AUTH / GATEKEEPING / SECURE HANDSHAKE PANEL -->
+    <!-- AUTH / GATEKEEPING / SECURE HANDSHAKE PANEL -->
       <div id="authPanel">
-        <p class="font-cinzel text-xs tracking-diplomat gold-text mb-2">CREDENTIAL VERIFICATION</p>
-        <h3 class="font-serif-elite text-2xl text-[#f5f2ea] mb-6">Present Your Access Key</h3>
-        <form id="loginForm" onsubmit="attemptLogin(event)" class="max-w-sm space-y-4" novalidate>
+        <!-- Tab Toggles -->
+        <div class="flex gap-4 mb-6 border-b border-gray-800 pb-2">
+          <button id="toggleLoginBtn" onclick="switchAuthMode('login')" class="font-cinzel text-xs tracking-diplomat gold-text border-b border-[#c5a880] pb-1 cursor-pointer">LOG IN</button>
+          <button id="toggleRegisterBtn" onclick="switchAuthMode('register')" class="font-cinzel text-xs tracking-diplomat text-[#5b6b82] pb-1 cursor-pointer hover:text-[#e7e9ee]">REGISTER</button>
+        </div>
+
+        <h3 id="authTitle" class="font-serif-elite text-2xl text-[#f5f2ea] mb-6">Present Your Access Key</h3>
+        
+        <form id="loginForm" onsubmit="handleAuthSubmit(event)" class="max-w-sm space-y-4" novalidate>
+          <!-- Registration Only Fields (Hidden by default) -->
+          <div id="registerFields" class="hidden space-y-4">
+            <div>
+              <label class="block text-xs text-[#94a3b8] mb-1.5">Full Name</label>
+              <input type="text" id="regName" class="w-full bg-[#111827] text-[#e7e9ee] border border-gray-800 rounded-sm px-3.5 py-2.5 text-sm" placeholder="John Doe">
+            </div>
+            <div>
+              <label class="block text-xs text-[#94a3b8] mb-1.5">Assigned Desk</label>
+              <select id="regDesk" class="w-full bg-[#111827] text-[#e7e9ee] border border-gray-800 rounded-sm px-3.5 py-2.5 text-sm">
+                <option value="desk1">Desk I - Foreign Policy & Regional Integration</option>
+                <option value="desk2">Desk II - Global Security & Conflict Studies</option>
+                <option value="desk3">Desk III - IPE & Development</option>
+                <option value="desk4">Desk IV - Multilateralism & International Law</option>
+                <option value="desk5">Desk V - Cyber Diplomacy & Digital Sovereignty</option>
+                <option value="desk6">Desk VI - Diplomatic Practice & Strategic Comms</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-[#94a3b8] mb-1.5">Institutional Role / Title</label>
+              <select id="regTitle" class="w-full bg-[#111827] text-[#e7e9ee] border border-gray-800 rounded-sm px-3.5 py-2.5 text-sm">
+                <option value="Research Analyst">Research Analyst</option>
+                <option value="Senior Researcher">Senior Researcher</option>
+                <option value="Head of Desk">Head of Desk</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Common Fields -->
           <div>
             <label class="block text-xs text-[#94a3b8] mb-1.5">Institutional Email</label>
-            <input type="text" id="loginEmail" oninput="validateLoginEmailLive()" class="w-full rounded-sm px-3.5 py-2.5 text-sm" placeholder="scholar@isd.org">
+            <input type="text" id="loginEmail" oninput="validateLoginEmailLive()" class="w-full bg-[#111827] text-[#e7e9ee] border border-gray-800 rounded-sm px-3.5 py-2.5 text-sm" placeholder="scholar@isd.org">
             <p id="loginEmailError" class="field-error hidden">Enter a valid email address (e.g. name@isd.org).</p>
           </div>
           <div>
-            <label class="block text-xs text-[#94a3b8] mb-1.5">Access Key</label>
-            <input type="password" id="loginKey" oninput="validateLoginKeyLive()" class="w-full rounded-sm px-3.5 py-2.5 text-sm" placeholder="&bull;&bull;&bull;&bull;">
+            <label id="keyLabel" class="block text-xs text-[#94a3b8] mb-1.5">Access Key</label>
+            <input type="password" id="loginKey" oninput="validateLoginKeyLive()" class="w-full bg-[#111827] text-[#e7e9ee] border border-gray-800 rounded-sm px-3.5 py-2.5 text-sm" placeholder="&bull;&bull;&bull;&bull;">
             <p id="loginKeyError" class="field-error hidden">Access key must be at least 4 characters.</p>
           </div>
+
+          <!-- Error / Status Messages -->
           <p id="loginError" class="hidden text-xs" style="color:#e0574a">Invalid credentials. Verify your access key and try again.</p>
-          <button type="submit" id="loginSubmitBtn" class="btn-gold px-6 py-2.5 rounded-sm text-sm tracking-wide inline-flex items-center gap-2.5">
+          <p id="authSuccessMessage" class="hidden text-xs text-[#2f9e6e]">Registration successful! Awaiting Director-General approval.</p>
+
+          <button type="submit" id="loginSubmitBtn" class="btn-gold px-6 py-2.5 rounded-sm text-sm tracking-wide inline-flex items-center gap-2.5 cursor-pointer">
             <span id="loginBtnLoader" class="loader-ring hidden w-3.5 h-3.5"></span>
             <span id="loginBtnLabel">Verify &amp; Enter</span>
           </button>
         </form>
-        <div class="mt-8 pt-6 border-t divider-gold text-[11px] text-[#5b6b82] leading-relaxed max-w-sm">
-          <p class="mb-1"><span class="gold-text">Basic Scholar</span> access key: <code class="text-[#94a3b8]">1234</code></p>
-          <p><span class="gold-text">Director-General</span> command key: <code class="text-[#94a3b8]">dg123</code> (email: <code class="text-[#94a3b8]">director@isd.org</code>)</p>
-          <p class="mt-2">Roster emails: <code class="text-[#94a3b8]">elena.voss@isd.org</code>, <code class="text-[#94a3b8]">kwame.adeyemi@isd.org</code>, etc. &mdash; key <code class="text-[#94a3b8]">1234</code> auto-routes recognized staff to their desk.</p>
+
+        <div id="authHelpText" class="mt-8 pt-6 border-t divider-gold text-[11px] text-[#5b6b82] leading-relaxed max-w-sm">
+          <p class="mb-1"><span class="gold-text">Note:</span> New accounts must be approved by the Director-General before system access is granted.</p>
         </div>
       </div>
-
       <!-- WORKSPACE (shown after login) -->
       <div id="workspacePanel" class="hidden">
 
@@ -697,94 +735,214 @@
 </div>
 
 <script>
-/* ================= DATA ================= */
-const DESKS = [
-  { id:'desk1', numeral:'I',   short:'Foreign Policy & Regional Integration', name:'Foreign Policy Analysis & Regional Integration', lead:'Dr. Kwame Adeyemi', leadEmail:'kwame.adeyemi@isd.org', initials:'KA', desc:'Bilateral and regional statecraft, alliance architecture, and integration frameworks.', accent:'#b23a48', accentSoft:'rgba(178,58,72,0.14)' },
-  { id:'desk2', numeral:'II',  short:'Global Security & Conflict Studies', name:'Global Security, Peace & Conflict Studies', lead:'Dr. Elena Voss', leadEmail:'elena.voss@isd.org', initials:'EV', desc:'Conflict prevention, peace operations, and hard security assessment.', accent:'#c9973f', accentSoft:'rgba(201,151,63,0.14)' },
-  { id:'desk3', numeral:'III', short:'IPE & Development', name:'International Political Economy (IPE) & Development', lead:'Dr. Rahul Mehta', leadEmail:'rahul.mehta@isd.org', initials:'RM', desc:'Trade regimes, sovereign development finance, and economic statecraft.', accent:'#2f9e6e', accentSoft:'rgba(47,158,110,0.14)' },
-  { id:'desk4', numeral:'IV',  short:'Multilateralism & International Law', name:'Multilateralism, International Organizations & Law', lead:'Amb. Sofia Lindqvist', leadEmail:'sofia.lindqvist@isd.org', initials:'SL', desc:'UN system reform, treaty law, and multilateral institution design.', accent:'#3b6ea5', accentSoft:'rgba(59,110,165,0.14)' },
-  { id:'desk5', numeral:'V',   short:'Cyber Diplomacy & Digital Sovereignty', name:'Cyber Diplomacy, Technology & Digital Sovereignty', lead:'Dr. Naledi Dube', leadEmail:'naledi.dube@isd.org', initials:'ND', desc:'Digital governance norms, cyber conflict, and technological sovereignty.', accent:'#8b6bc9', accentSoft:'rgba(139,107,201,0.14)' },
-  { id:'desk6', numeral:'VI',  short:'Diplomatic Practice & Strategic Comms', name:'Diplomatic Practice, Public Diplomacy & Strategic Communications', lead:'Amb. Henri Delacroix', leadEmail:'henri.delacroix@isd.org', initials:'HD', desc:'Negotiation craft, public diplomacy, and strategic narrative.', accent:'#7d8a9c', accentSoft:'rgba(125,138,156,0.14)' },
-];
+/* ================= SUPABASE INITIALIZATION ================= */
+const supabaseUrl = 'https://tujjezwjsyansvuhhhem.supabase.co'; 
+const supabaseKey = 'sb_publishable_rZKPn0n2BWZ5lmIZZqBOAA_-j2SUJQN';
+const sb = supabase.createClient(supabaseUrl, supabaseKey);
 
-const DG_CREDENTIALS = { email:'director@isd.org', key:'dg123' };
-const SCHOLAR_KEY = '1234';
-const BRIEFS_KEY = 'isd_briefs_v3';
-const APPS_KEY = 'isd_applications_v1';
-const ACTIVITY_KEY = 'isd_activity_v1';
-const USERS_KEY = 'isd_users_v1';
+// Used by validateLoginEmailLive(), applyForm validation, etc.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const SEED_BRIEFS = [
-  { id:'seed1', deskId:'desk2', title:'Ceasefire Durability in Multiparty Conflicts', author:'Dr. Elena Voss', status:'published', submittedAt:'2026-05-02', fileName:'ceasefire-durability.pdf', dataUri:null, fileKind:null, articleBody:'Ceasefires in multiparty conflicts fail at a markedly higher rate than bilateral truces, largely because signatory coordination costs rise non-linearly with each additional armed faction at the table.\n\nThis brief surveys twelve multiparty ceasefires since 2010 and finds that durability correlates most strongly with the presence of a credible third-party verification mechanism, rather than the strength of the political settlement itself.\n\nWe recommend that mediators front-load monitoring architecture before final signature, rather than treating verification as a post-agreement afterthought.', rejectionNote:null },
-  { id:'seed2', deskId:'desk5', title:'Digital Sovereignty and Cross-Border Data Flows', author:'Dr. Naledi Dube', status:'published', submittedAt:'2026-05-18', fileName:'digital-sovereignty.pdf', dataUri:null, fileKind:null, articleBody:'Data localization mandates are proliferating faster than the multilateral frameworks meant to govern them, creating a patchwork of sovereign data regimes that complicate both commerce and security cooperation.\n\nThis brief maps the current landscape across 40 jurisdictions and proposes a tiered interoperability standard that preserves core sovereignty protections while reducing compliance friction for cross-border digital trade.', rejectionNote:null },
-  { id:'seed3', deskId:'desk3', title:'Sovereign Debt Restructuring in the Global South', author:'Dr. Rahul Mehta', status:'published', submittedAt:'2026-06-01', fileName:'sovereign-debt.pdf', dataUri:null, fileKind:null, articleBody:'The current sovereign debt restructuring architecture was not built for a creditor landscape this fragmented. Bilateral, multilateral, and commercial creditors now routinely disagree on comparability of treatment, stalling restructurings for years.\n\nThis brief argues for a standing arbitration facility, modeled loosely on investor-state dispute mechanisms, to compress restructuring timelines without displacing the Paris Club or the G20 Common Framework.', rejectionNote:null },
-  { id:'seed4', deskId:'desk4', title:'Reforming the UN Security Council Veto', author:'Amb. Sofia Lindqvist', status:'published', submittedAt:'2026-06-20', fileName:'un-veto-reform.pdf', dataUri:null, fileKind:null, articleBody:'Veto reform proposals have circulated for decades without traction, largely because they target the veto itself rather than the conditions under which it is exercised.\n\nThis brief revives the "veto restraint" model: a voluntary code of conduct in which permanent members commit to abstaining rather than vetoing in cases of mass atrocity, verified by a rotating panel of elected members.', rejectionNote:null },
-];
-
-const SEED_USERS = [
-  { id:'u_dg', email:'director@isd.org', name:'Trevor Museti', role:'dg', deskId:null, title:'Director General' },
-  { id:'u1', email:'kwame.adeyemi@isd.org', name:'Dr. Kwame Adeyemi', role:'analyst', deskId:'desk1', title:'Senior Analyst' },
-  { id:'u2', email:'elena.voss@isd.org', name:'Dr. Elena Voss', role:'analyst', deskId:'desk2', title:'Senior Analyst' },
-  { id:'u3', email:'rahul.mehta@isd.org', name:'Dr. Rahul Mehta', role:'analyst', deskId:'desk3', title:'Senior Analyst' },
-  { id:'u4', email:'sofia.lindqvist@isd.org', name:'Amb. Sofia Lindqvist', role:'analyst', deskId:'desk4', title:'Senior Analyst' },
-  { id:'u5', email:'naledi.dube@isd.org', name:'Dr. Naledi Dube', role:'analyst', deskId:'desk5', title:'Senior Analyst' },
-  { id:'u6', email:'henri.delacroix@isd.org', name:'Amb. Henri Delacroix', role:'analyst', deskId:'desk6', title:'Senior Analyst' },
-];
-
-/* ================= STATE ================= */
-let state = {
-  loggedIn:false,
-  role:null,
-  currentUser:null,
-  activeDesk:null,
-  pendingFile:null,
-  briefs:[],
-  applications:[],
-  activity:[],
-  users:[],
-  dgTab:'pending',
-  librarySearch:'',
-  librarySort:'newest',
-};
 let rejectTargetId = null;
 let appDetailTargetId = null;
 
+// ================= AUTHENTICATION FUNCTIONS =================
+
+// Toggle between Login and Registration views
+window.switchAuthMode = function(mode) {
+  const isRegister = mode === 'register';
+  document.getElementById('registerFields').classList.toggle('hidden', !isRegister);
+  document.getElementById('authTitle').innerText = isRegister ? 'Register Diplomatic Profile' : 'Present Your Access Key';
+  document.getElementById('loginBtnLabel').innerText = isRegister ? 'Request Account' : 'Verify & Enter';
+  
+  // Update Tab Visuals
+  document.getElementById('toggleLoginBtn').className = isRegister ? 'font-cinzel text-xs tracking-diplomat text-[#5b6b82] pb-1 cursor-pointer hover:text-[#e7e9ee]' : 'font-cinzel text-xs tracking-diplomat gold-text border-b border-[#c5a880] pb-1 cursor-pointer';
+  document.getElementById('toggleRegisterBtn').className = isRegister ? 'font-cinzel text-xs tracking-diplomat gold-text border-b border-[#c5a880] pb-1 cursor-pointer' : 'font-cinzel text-xs tracking-diplomat text-[#5b6b82] pb-1 cursor-pointer hover:text-[#e7e9ee]';
+  
+  // Clear any old message alerts
+  document.getElementById('loginError').classList.add('hidden');
+  document.getElementById('authSuccessMessage').classList.add('hidden');
+}
+
+// Intercept form submission and process via Supabase
+window.handleAuthSubmit = async function(e) {
+  e.preventDefault();
+  const isRegister = !document.getElementById('registerFields').classList.contains('hidden');
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginKey').value.trim();
+  const errorEl = document.getElementById('loginError');
+  const successEl = document.getElementById('authSuccessMessage');
+  const btnLabel = document.getElementById('loginBtnLabel');
+  
+  errorEl.classList.add('hidden');
+  successEl.classList.add('hidden');
+
+  if (!email || !password || password.length < 4) {
+    errorEl.innerText = "Please fill out all required fields correctly.";
+    errorEl.classList.remove('hidden');
+    return;
+  }
+
+  btnLabel.innerText = "Processing...";
+
+  if (isRegister) {
+    const fullName = document.getElementById('regName').value.trim();
+    const deskId = document.getElementById('regDesk').value;
+    const title = document.getElementById('regTitle').value;
+    const role = (email === 'director@isd.org') ? 'dg' : 'analyst';
+
+    if (!fullName) {
+      errorEl.innerText = "Full Name is required for registration.";
+      errorEl.classList.remove('hidden');
+      btnLabel.innerText = "Request Account";
+      return;
+    }
+
+    const { data, error } = await sb.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          full_name: fullName,
+          desk_id: deskId,
+          title: title,
+          role: role
+        }
+      }
+    });
+
+    if (error) {
+      errorEl.innerText = error.message;
+      errorEl.classList.remove('hidden');
+      btnLabel.innerText = "Request Account";
+    } else {
+      successEl.classList.remove('hidden');
+      document.getElementById('loginForm').reset();
+      window.switchAuthMode('login');
+    }
+
+  } else {
+    const { data, error } = await sb.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      errorEl.innerText = error.message;
+      errorEl.classList.remove('hidden');
+      btnLabel.innerText = "Verify & Enter";
+      return;
+    }
+
+    const { data: profile, error: profError } = await sb
+      .from('profiles')
+      .select('*')
+      .eq('id', data.user.id)
+      .single();
+
+    if (profError || !profile) {
+      errorEl.innerText = "Profile initialization error. Contact system admin.";
+      errorEl.classList.remove('hidden');
+      btnLabel.innerText = "Verify & Enter";
+      return;
+    }
+
+    // profile.is_approved may not exist as a column on every install --
+    // only block login if it's explicitly false, never just falsy/missing.
+    if (profile.is_approved === false) {
+      errorEl.innerText = "Account pending approval by the Director-General.";
+      errorEl.classList.remove('hidden');
+      btnLabel.innerText = "Verify & Enter";
+      await sb.auth.signOut();
+      return;
+    }
+
+    // Populate app state from the real profiles row, then hand off to
+    // refreshPortalView() -- the same function portalLogout() and the app's
+    // init already rely on to toggle #authPanel / #workspacePanel correctly.
+    state.loggedIn = true;
+    state.role = profile.role || 'analyst';
+    state.currentUser = {
+      id: profile.id,
+      name: profile.full_name || 'Scholar',
+      role: profile.role || 'analyst',
+      title: profile.title || 'Senior Analyst',
+      email: profile.email,
+      deskId: profile.desk_id || null
+    };
+    state.activeDesk = profile.desk_id || null;
+
+    document.getElementById('loginForm').reset();
+    btnLabel.innerText = "Verify & Enter";
+    refreshPortalView();
+    showToast('Credentials verified. Welcome back.', 'success');
+  }
+}
+
 /* ================= PERSISTENCE ================= */
 function loadBriefs(){
+  if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
   try{
     const raw = localStorage.getItem(BRIEFS_KEY);
-    state.briefs = raw ? JSON.parse(raw) : SEED_BRIEFS.slice();
+    state.briefs = raw ? JSON.parse(raw) : (typeof SEED_BRIEFS !== 'undefined' ? SEED_BRIEFS.slice() : []);
     if(!raw) saveBriefs();
-  }catch(e){ state.briefs = SEED_BRIEFS.slice(); }
+  }catch(e){ 
+    state.briefs = typeof SEED_BRIEFS !== 'undefined' ? SEED_BRIEFS.slice() : []; 
+  }
 }
-function saveBriefs(){ try{ localStorage.setItem(BRIEFS_KEY, JSON.stringify(state.briefs)); }catch(e){} }
+
+function saveBriefs(){ 
+  if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
+  try{ 
+    localStorage.setItem(BRIEFS_KEY, JSON.stringify(state.briefs)); 
+  }catch(e){} 
+}
 
 function loadApplications(){
+  if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
   try{ const raw = localStorage.getItem(APPS_KEY); state.applications = raw ? JSON.parse(raw) : []; }
   catch(e){ state.applications = []; }
 }
-function saveApplications(){ try{ localStorage.setItem(APPS_KEY, JSON.stringify(state.applications)); }catch(e){} }
+
+function saveApplications(){ 
+  if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
+  try{ localStorage.setItem(APPS_KEY, JSON.stringify(state.applications)); }catch(e){} 
+}
 
 function loadActivity(){
+  if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
   try{ const raw = localStorage.getItem(ACTIVITY_KEY); state.activity = raw ? JSON.parse(raw) : []; }
   catch(e){ state.activity = []; }
 }
-function saveActivity(){ try{ localStorage.setItem(ACTIVITY_KEY, JSON.stringify(state.activity)); }catch(e){} }
+
+function saveActivity(){ 
+  if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
+  try{ localStorage.setItem(ACTIVITY_KEY, JSON.stringify(state.activity)); }catch(e){} 
+}
+
 function logActivity(message){
-  state.activity.unshift({ id:uid(), message:message, ts:new Date().toISOString() });
+  if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
+  state.activity.unshift({ id: (typeof uid === 'function' ? uid() : Date.now().toString()), message: message, ts: new Date().toISOString() });
   state.activity = state.activity.slice(0, 100);
   saveActivity();
 }
-
 function loadUsers(){
+  if (typeof state === 'undefined') { window.state = window.state || { users: [], loggedIn: false }; var state = window.state; }
   try{
     const raw = localStorage.getItem(USERS_KEY);
-    state.users = raw ? JSON.parse(raw) : SEED_USERS.slice();
+    state.users = raw ? JSON.parse(raw) : (typeof SEED_USERS !== 'undefined' ? SEED_USERS.slice() : []);
     if(!raw) saveUsers();
-  }catch(e){ state.users = SEED_USERS.slice(); }
+  }catch(e){ 
+    state.users = typeof SEED_USERS !== 'undefined' ? SEED_USERS.slice() : []; 
+  }
 }
-function saveUsers(){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(state.users)); }catch(e){} }
+
+function saveUsers(){ 
+  if (typeof state === 'undefined') { window.state = window.state || { users: [], loggedIn: false }; var state = window.state; }
+  try{ 
+    localStorage.setItem(USERS_KEY, JSON.stringify(state.users)); 
+  }catch(e){} 
+}
 
 /* ================= TOAST ================= */
 function showToast(msg, tone){
@@ -825,20 +983,97 @@ function closeMobileMenu(){
 }
 
 /* ================= RENDER: PUBLIC DESKS ================= */
+function ensureDesksExist(){
+  if (typeof DESKS === 'undefined' || !window.DESKS) {
+    window.DESKS = [
+      { 
+        id: 'desk1', 
+        numeral: 'I', 
+        name: 'Foreign Policy Analysis & Regional Integration', 
+        short: 'Foreign Policy', 
+        lead: 'Rebecca Wanjiku', 
+        leadEmail: 'rebecca@isd.portal', 
+        accent: '#3b82f6', 
+        desc: 'Analyzing state foreign policy frameworks, regional integration dynamics, and strategic diplomatic partnerships.' 
+      },
+      { 
+        id: 'desk2', 
+        numeral: 'II', 
+        name: 'Global Security, Peace & Conflict Studies', 
+        short: 'Global Security', 
+        lead: 'George Ndungu', 
+        leadEmail: 'george@isd.portal', 
+        accent: '#ef4444', 
+        desc: 'Focusing on international security architectures, conflict resolution mechanisms, peacebuilding, and geostrategic threats.' 
+      },
+      { 
+        id: 'desk3', 
+        numeral: 'III', 
+        name: 'International Political Economy (IPE) & Development', 
+        short: 'IPE & Development', 
+        lead: 'Derick Abuti', 
+        leadEmail: 'derick@isd.portal', 
+        accent: '#f59e0b', 
+        desc: 'Tracking global economic systems, cross-border trade regimes, international development assistance, and financial governance.' 
+      },
+      { 
+        id: 'desk4', 
+        numeral: 'IV', 
+        name: 'Multilateralism, International Organizations & Law', 
+        short: 'Multilateralism & Law', 
+        lead: 'Penina Maina', 
+        leadEmail: 'penina@isd.portal', 
+        accent: '#10b981', 
+        desc: 'Evaluating international humanitarian law, treaty compliance, and the administrative frameworks of multilateral organizations.' 
+      },
+      { 
+        id: 'desk5', 
+        numeral: 'V', 
+        name: 'Cyber Diplomacy, Technology & Digital Sovereignty', 
+        short: 'Cyber Diplomacy', 
+        lead: 'Lordin Maangi', 
+        leadEmail: 'lordin@isd.portal', 
+        accent: '#8b5cf6', 
+        desc: 'Investigating AI governance, cyberwarfare, state-level data privacy regulations, and technological statecraft.' 
+      },
+      { 
+        id: 'desk6', 
+        numeral: 'VI', 
+        name: 'Diplomatic Practice, Public Diplomacy & Strategic Communications', 
+        short: 'Diplomatic Practice', 
+        lead: 'Stanley Kasuti', 
+        leadEmail: 'stanley@isd.portal', 
+        accent: '#06b6d4', 
+        desc: 'Analyzing the operational craft of negotiation, strategic state soft power, embassy administration, and public diplomacy.' 
+      }
+    ];
+  }
+  if (typeof DESKS === 'undefined') {
+    window.DESKS = window.DESKS;
+  }
+}
+
 function renderDesksGrid(){
+  ensureDesksExist();
   const grid = document.getElementById('desksGrid');
-  grid.innerHTML = DESKS.map(d => `
+  if(!grid) return;
+  const items = window.DESKS || DESKS;
+  grid.innerHTML = items.map(d => `
     <div class="card-elite rounded-md p-7" style="border-top:3px solid ${d.accent}" onmousemove="cardGlow(event)">
-      <p class="desk-number font-cinzel text-3xl mb-4" style="color:${d.accentSoft ? d.accent : ''}; opacity:.55">${d.numeral}</p>
+      <p class="desk-number font-cinzel text-3xl mb-4" style="color:${d.accent}; opacity:.55">${d.numeral}</p>
       <h3 class="font-serif-elite text-lg text-[#f5f2ea] leading-snug mb-2">${d.name}</h3>
       <p class="text-[#94a3b8] text-sm leading-relaxed mb-4">${d.desc}</p>
       <p class="text-[11px] tracking-widest text-[#5b6b82]">LED BY <span style="color:${d.accent}">${d.lead.toUpperCase()}</span></p>
     </div>
   `).join('');
 }
+
 function renderDeskLeads(){
+  ensureDesksExist();
   const grid = document.getElementById('deskLeadsGrid');
-  grid.innerHTML = DESKS.map(d => `
+  if(!grid) return;
+  const items = window.DESKS || DESKS;
+  grid.innerHTML = items.map(d => `
     <div class="card-elite rounded-md p-6 text-center" onmousemove="cardGlow(event)">
       <div class="profile-frame w-16 h-16 mx-auto mb-4" style="border-color:${d.accent}88;">
         <img src="images/leadership/${d.leadEmail.split('@')[0]}.jpg" alt="${d.lead}" onerror="this.style.display='none'">
@@ -852,11 +1087,14 @@ function renderDeskLeads(){
     </div>
   `).join('');
 }
-function renderApplyDeskOptions(){
-  const sel = document.getElementById('applyDeskSelect');
-  sel.innerHTML = '<option value="">Select a desk&hellip;</option>' + DESKS.map(d => `<option value="${d.id}">Desk ${d.numeral} &mdash; ${d.short}</option>`).join('');
-}
 
+function renderApplyDeskOptions(){
+  ensureDesksExist();
+  const sel = document.getElementById('applyDeskSelect');
+  if(!sel) return;
+  const items = window.DESKS || DESKS;
+  sel.innerHTML = '<option value="">Select a desk&hellip;</option>' + items.map(d => `<option value="${d.id}">Desk ${d.numeral} &mdash; ${d.short}</option>`).join('');
+}
 /* ================= RENDER: LIBRARY ================= */
 let activeLibraryFilter = 'all';
 function renderLibraryFilters(){
@@ -1047,77 +1285,18 @@ function validateLoginKeyLive(){
   return ok;
 }
 
-function attemptLogin(e){
-  e.preventDefault();
-  const emailOk = validateLoginEmailLive();
-  const keyOk = validateLoginKeyLive();
-  const email = document.getElementById('loginEmail').value.trim();
-  const key = document.getElementById('loginKey').value.trim();
-  const errorEl = document.getElementById('loginError');
-  errorEl.classList.add('hidden');
-
-  if(email.length === 0 || !emailOk){
-    document.getElementById('loginEmail').classList.add('field-invalid');
-    document.getElementById('loginEmailError').classList.remove('hidden');
-    return;
+async function portalLogout(){
+  // Sign out of the real Supabase session, not just local UI state --
+  // otherwise the auth token stays valid and a page refresh logs the user
+  // right back in.
+  if (typeof sb !== 'undefined' && sb && sb.auth) {
+    await sb.auth.signOut();
   }
-  if(key.length === 0 || !keyOk){
-    document.getElementById('loginKey').classList.add('field-invalid');
-    document.getElementById('loginKeyError').classList.remove('hidden');
-    return;
-  }
-
-  const btn = document.getElementById('loginSubmitBtn');
-  const loader = document.getElementById('loginBtnLoader');
-  const label = document.getElementById('loginBtnLabel');
-  btn.disabled = true;
-  loader.classList.remove('hidden');
-  label.textContent = 'Establishing Handshake…';
-
-  setTimeout(()=>{
-    const emailLower = email.toLowerCase();
-
-    if(emailLower === DG_CREDENTIALS.email && key === DG_CREDENTIALS.key){
-      state.loggedIn = true; state.role = 'dg';
-      state.currentUser = state.users.find(u=>u.role==='dg') || { name:'Trevor Museti', role:'dg', title:'Director General', email:DG_CREDENTIALS.email, deskId:null };
-      finishLoginSuccess('Director-General credentials verified. Welcome back.');
-      return;
-    }
-    if(key === SCHOLAR_KEY && EMAIL_RE.test(emailLower)){
-      state.loggedIn = true; state.role = 'scholar';
-      const matched = state.users.find(u => u.email.toLowerCase() === emailLower);
-      if(matched){
-        state.currentUser = matched;
-        state.activeDesk = matched.deskId || null;
-      } else {
-        state.currentUser = { id:uid(), email:emailLower, name:nameFromEmail(emailLower), role:'analyst', deskId:null, title:'Senior Analyst' };
-        state.activeDesk = null;
-      }
-      finishLoginSuccess(matched ? `Welcome back, ${matched.name.split(' ').pop()}. Routed to your desk.` : 'Scholar access granted.');
-      return;
-    }
-
-    btn.disabled = false;
-    loader.classList.add('hidden');
-    label.textContent = 'Verify & Enter';
-    errorEl.textContent = 'Invalid credentials. Verify your access key and try again.';
-    errorEl.classList.remove('hidden');
-  }, 900);
-}
-
-function finishLoginSuccess(toastMsg){
-  const btn = document.getElementById('loginSubmitBtn');
-  const loader = document.getElementById('loginBtnLoader');
-  const label = document.getElementById('loginBtnLabel');
-  btn.disabled = false;
-  loader.classList.add('hidden');
-  label.textContent = 'Verify & Enter';
-  showToast(toastMsg, 'success');
-  refreshPortalView();
-}
-
-function portalLogout(){
-  state.loggedIn = false; state.role = null; state.currentUser = null; state.activeDesk = null; state.pendingFile = null;
+  state.loggedIn = false; 
+  state.role = null; 
+  state.currentUser = null; 
+  state.activeDesk = null; 
+  state.pendingFile = null;
   document.getElementById('loginEmail').value = '';
   document.getElementById('loginKey').value = '';
   document.getElementById('loginEmail').classList.remove('field-invalid');
@@ -1138,42 +1317,53 @@ function refreshPortalView(){
   const dgPanel = document.getElementById('dgPanel');
 
   if(!state.loggedIn){
-    authPanel.classList.remove('hidden');
-    workspacePanel.classList.add('hidden');
-    roleBadge.classList.add('hidden');
-    logoutBtn.classList.add('hidden');
-    subtitle.textContent = 'Credentialed access only';
+    if (authPanel) authPanel.classList.remove('hidden');
+    if (workspacePanel) workspacePanel.classList.add('hidden');
+    if (roleBadge) roleBadge.classList.add('hidden');
+    if (logoutBtn) logoutBtn.classList.add('hidden');
+    if (subtitle) subtitle.textContent = 'Credentialed access only';
     return;
   }
 
-  authPanel.classList.add('hidden');
-  workspacePanel.classList.remove('hidden');
-  logoutBtn.classList.remove('hidden');
-  roleBadge.classList.remove('hidden');
+  if (authPanel) authPanel.classList.add('hidden');
+  if (workspacePanel) workspacePanel.classList.remove('hidden');
+  if (logoutBtn) logoutBtn.classList.remove('hidden');
+  if (roleBadge) roleBadge.classList.remove('hidden');
 
-  renderIdentityBanner();
+  if (typeof renderIdentityBanner === 'function') {
+    renderIdentityBanner();
+  }
 
   if(state.role === 'dg'){
-    roleBadge.textContent = 'DIRECTOR-GENERAL';
-    roleBadge.className = 'text-[10px] tracking-widest px-3 py-1.5 rounded-full border status-published';
-    subtitle.textContent = 'Executive command access';
-    dgPanel.classList.remove('hidden');
-    switchDgTab(state.dgTab || 'pending');
+    if (roleBadge) {
+      roleBadge.textContent = 'DIRECTOR-GENERAL';
+      roleBadge.className = 'text-[10px] tracking-widest px-3 py-1.5 rounded-full border status-published';
+    }
+    if (subtitle) subtitle.textContent = 'Executive command access';
+    if (dgPanel) dgPanel.classList.remove('hidden');
+    if (typeof switchDgTab === 'function') switchDgTab(state.dgTab || 'pending');
   } else {
-    roleBadge.textContent = 'SCHOLAR';
-    roleBadge.className = 'text-[10px] tracking-widest px-3 py-1.5 rounded-full border status-pending';
-    subtitle.textContent = 'Scholar workspace access';
-    dgPanel.classList.add('hidden');
+    if (roleBadge) {
+      roleBadge.textContent = 'SCHOLAR';
+      roleBadge.className = 'text-[10px] tracking-widest px-3 py-1.5 rounded-full border status-pending';
+    }
+    if (subtitle) subtitle.textContent = 'Scholar workspace access';
+    if (dgPanel) dgPanel.classList.add('hidden');
   }
 
-  renderWorkspaceDeskGrid();
-  if(state.activeDesk){ showDeskWorkStage(); }
-  else {
-    document.getElementById('deskSelectStage').classList.remove('hidden');
-    document.getElementById('deskWorkStage').classList.add('hidden');
+  if (typeof renderWorkspaceDeskGrid === 'function') {
+    renderWorkspaceDeskGrid();
+  }
+
+  if(state.activeDesk){ 
+    if (typeof showDeskWorkStage === 'function') showDeskWorkStage(); 
+  } else {
+    const selectStage = document.getElementById('deskSelectStage');
+    const workStage = document.getElementById('deskWorkStage');
+    if (selectStage) selectStage.classList.remove('hidden');
+    if (workStage) workStage.classList.add('hidden');
   }
 }
-
 /* ================= PREMIUM IDENTITY / GREETING LAYER ================= */
 function renderIdentityBanner(){
   const wrap = document.getElementById('identityBanner');
