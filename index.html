@@ -880,22 +880,39 @@ window.handleAuthSubmit = async function(e) {
 }
 
 /* ================= PERSISTENCE ================= */
-function loadBriefs(){
+async function loadBriefs() {
   if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
-  try{
-    const raw = localStorage.getItem(BRIEFS_KEY);
-    state.briefs = raw ? JSON.parse(raw) : (typeof SEED_BRIEFS !== 'undefined' ? SEED_BRIEFS.slice() : []);
-    if(!raw) saveBriefs();
-  }catch(e){ 
-    state.briefs = typeof SEED_BRIEFS !== 'undefined' ? SEED_BRIEFS.slice() : []; 
+  try {
+    const { data, error } = await sb
+      .from('briefs')
+      .select('*')
+      .order('id', { ascending: false });
+
+    if (error) throw error;
+    state.briefs = data || [];
+  } catch (e) {
+    console.error("Error fetching briefs from Supabase:", e);
+    state.briefs = typeof SEED_BRIEFS !== 'undefined' ? SEED_BRIEFS.slice() : [];
+  }
+  if (typeof refreshPortalView === 'function') {
+    refreshPortalView();
   }
 }
 
-function saveBriefs(){ 
-  if (typeof state === 'undefined') { window.state = window.state || { briefs: [], users: [], applications: [], activity: [], loggedIn: false }; var state = window.state; }
-  try{ 
-    localStorage.setItem(BRIEFS_KEY, JSON.stringify(state.briefs)); 
-  }catch(e){} 
+async function saveBriefs(newBrief) {
+  if (!newBrief) return;
+  try {
+    const { error } = await sb
+      .from('briefs')
+      .insert([newBrief]);
+
+    if (error) throw error;
+    showToast('Brief successfully published to the cloud archive!', 'success');
+    await loadBriefs();
+  } catch (e) {
+    console.error("Error saving brief to Supabase:", e);
+    showToast('Cloud sync failed, check console permissions.', 'error');
+  }
 }
 
 function loadApplications(){
@@ -926,6 +943,7 @@ function logActivity(message){
   state.activity = state.activity.slice(0, 100);
   saveActivity();
 }
+
 function loadUsers(){
   if (typeof state === 'undefined') { window.state = window.state || { users: [], loggedIn: false }; var state = window.state; }
   try{
